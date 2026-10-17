@@ -17,7 +17,7 @@ export function FireRow({ className }: { className: string }) {
 					: 'Pick a cell'
 	return (
 		<div className={`flex items-center gap-4 ${className}`}>
-			<p className="flex-1 text-body-large text-on-surface expanded:flex-none">{text}</p>
+			<p className="flex-1 text-body-large text-on-surface tabular-nums expanded:flex-none">{text}</p>
 			<Button disabled={turn !== 'player' || !aim} onClick={fire}>
 				Fire
 			</Button>
