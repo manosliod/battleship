@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import type { ReactNode } from 'react'
 
+import { useGuard } from '@/shared/hooks/use-guard'
 import type { EngineSession } from '@/shared/types/game'
 import { createStoreContext } from '@/shared/utils/create-store-context'
 
@@ -22,4 +23,15 @@ export const useCurrentShip = () => usePlacementStore((state) => state.current)
 export const useAcross = () => usePlacementStore((state) => state.across)
 export const usePointer = () => usePlacementStore((state) => state.pointer)
 export const useRefusal = () => usePlacementStore((state) => state.refusal)
-export const usePlacementActions = () => usePlacementStore((state) => state.actions)
+export function usePlacementActions() {
+	const actions = usePlacementStore((state) => state.actions)
+	const guard = useGuard()
+	return {
+		tapCell: guard(actions.tapCell),
+		point: guard(actions.point),
+		rotate: guard(actions.rotate),
+		random: guard(actions.random),
+		reset: guard(actions.reset),
+		start: guard(actions.start)
+	}
+}

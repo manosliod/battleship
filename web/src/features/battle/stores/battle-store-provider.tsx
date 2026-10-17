@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import type { ReactNode } from 'react'
 
+import { useGuard } from '@/shared/hooks/use-guard'
 import type { EngineSession } from '@/shared/types/game'
 import { createStoreContext } from '@/shared/utils/create-store-context'
 
@@ -23,4 +24,14 @@ export const useTurn = () => useBattleStore((state) => state.turn)
 export const useAim = () => useBattleStore((state) => state.aim)
 export const useStatus = () => useBattleStore((state) => state.status)
 export const useDialog = () => useBattleStore((state) => state.dialog)
-export const useBattleActions = () => useBattleStore((state) => state.actions)
+export function useBattleActions() {
+	const actions = useBattleStore((state) => state.actions)
+	const guard = useGuard()
+	return {
+		aim: guard(actions.aim),
+		fire: guard(actions.fire),
+		openLeave: guard(actions.openLeave),
+		closeDialog: guard(actions.closeDialog),
+		dispose: guard(actions.dispose)
+	}
+}
