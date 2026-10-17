@@ -148,3 +148,46 @@
 .fleet-segment[data-content='sunk'] {
 	background-color: var(--color-error);
 }
+
+.board-cell[data-content='miss'],
+.board-cell[data-content='hit'],
+.board-cell[data-content='sunk'] {
+	transition: background-color var(--motion-duration-short3) var(--ease-standard);
+}
+
+.board-cell[data-content='miss'] .cell-dot,
+.board-cell[data-content='hit'] .cell-mark,
+.board-cell[data-content='sunk'] .cell-mark {
+	transition-property: opacity, scale;
+	transition-duration: var(--motion-duration-short4);
+	transition-timing-function: var(--ease-emphasized-decelerate);
+
+	@starting-style {
+		opacity: 0;
+		scale: 0.9;
+	}
+}
+
+.board-cell[data-content='sunk'] {
+	animation: cell-settle var(--motion-duration-medium1) var(--ease-emphasized-decelerate);
+}
+
+@keyframes cell-settle {
+	from {
+		scale: 0.92;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.board-cell[data-content='miss'],
+	.board-cell[data-content='hit'],
+	.board-cell[data-content='sunk'],
+	.board-cell .cell-dot,
+	.board-cell .cell-mark {
+		transition: none;
+	}
+
+	.board-cell[data-content='sunk'] {
+		animation: none;
+	}
+}
