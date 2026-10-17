@@ -77,7 +77,11 @@ export function createBattleStore({ session, replyDelay }: BattleDependencies) {
 			set({
 				home: snapshot.home,
 				turn: 'player',
-				status: { headline: 'Your turn', supporting: `${replyText(reply)} Pick a cell, then fire.` }
+				status: {
+					headline: 'Your turn',
+					supporting:
+						reply.result === 'miss' ? `${replyText(reply)} Pick a cell, then fire.` : replyText(reply)
+				}
 			})
 		}
 
