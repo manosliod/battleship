@@ -137,7 +137,7 @@
 	align-content: start;
 	column-gap: calc(var(--spacing) * 4);
 	row-gap: calc(var(--spacing) * 3);
-	grid-template-columns: minmax(0, var(--spacing-board-small)) minmax(0, 1fr);
+	grid-template-columns: minmax(0, var(--spacing-board-small)) auto;
 	grid-template-areas: 'status status' 'enemy enemy' 'fire fire' 'yours elist';
 
 	@variant medium {

@@ -83,8 +83,8 @@ function BattleContent({ player, onLeave, onPlayAgain }: Omit<BattleScreenProps,
 						className="area-elist flex medium:mt-9 expanded:mt-0"
 					/>
 					<section aria-labelledby="your-fleet" className="area-yours flex flex-col gap-2 expanded:gap-3">
-						<h2 id="your-fleet" className="text-title-small text-on-surface">
-							{fleetTitle}
+						<h2 id="your-fleet" className="text-title-small wrap-anywhere text-on-surface">
+							<bdi>{player}</bdi>’s fleet
 						</h2>
 						<Board label={fleetTitle} size="adaptive" cells={homeCells} />
 					</section>

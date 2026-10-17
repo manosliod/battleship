@@ -118,13 +118,13 @@
 }
 
 .cell-mark {
-	width: var(--mark);
-	height: var(--mark);
+	width: min(var(--mark), 80%);
+	height: min(var(--mark), 80%);
 }
 
 .cell-dot {
-	width: var(--dot);
-	height: var(--dot);
+	width: min(var(--dot), 50%);
+	height: min(var(--dot), 50%);
 	border-radius: var(--radius-full);
 	background-color: var(--color-outline);
 }

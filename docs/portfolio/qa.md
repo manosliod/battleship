@@ -51,3 +51,17 @@ engine's loading and error screens with a working retry. Each one is covered by 
 
 - Real phones (tap delay, safe areas, the on-screen keyboard): needs hardware.
 - `review-animations` could not be run by an agent; it needs to be started by hand.
+
+## Worst case (`break-ui`)
+
+Names tried at 320 and 412: "Aleksandra Wiśniewska-Kowalczyk", a 37-letter name with no spaces, "👩🏽‍🚀 Ada", "أميرة الحسن"
+and "J". The name has no length limit in the engine or the form.
+
+| Found | Fix |
+| --- | --- |
+| At 320 the enemy ship list pushed the page 51 px wider than the screen | The fleet column gives way first: your small board shrinks (131 dp at 320, 171 at 360, 198 at 412) and the list keeps its width |
+| A name with no spaces ran into "Enemy ships" | The fleet title and dialog titles break long words |
+| An Arabic name moved "’s fleet" to the wrong side | The name is isolated from the text around it |
+| Marks could be larger than a shrunken cell | Marks and miss dots are capped to the cell size |
+
+Held up: one-letter names, emoji and accented names, every screen at 412 and wider.
