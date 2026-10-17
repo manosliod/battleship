@@ -57,18 +57,15 @@
 	--radius-full: 1000px;
 
 	--spacing-cell: 34px;
-	--spacing-cell-medium: 30px;
 	--spacing-cell-small: 18px;
 	--spacing-cell-gap: 2px;
 	--spacing-coordinates: 20px;
 	--spacing-board: 380px;
-	--spacing-board-medium: 340px;
 	--spacing-board-small: 198px;
 	--spacing-fleet-segment: 12px;
 	--spacing-miss-dot: 8px;
 	--spacing-miss-dot-small: 6px;
 	--spacing-mark: 22px;
-	--spacing-mark-medium: 20px;
 	--spacing-mark-small: 14px;
 	--spacing-cell-ring: 2px;
 	--spacing-focus-ring: 3px;
@@ -80,10 +77,12 @@
 	--spacing-control: 40px;
 	--spacing-field: 56px;
 	--spacing-dialog: 312px;
+	--spacing-message: 320px;
 	--spacing-dialog-margin: 24px;
 	--spacing-snackbar: 400px;
-	--spacing-form: 400px;
+	--spacing-form: 420px;
 	--spacing-side-pane: 360px;
+	--spacing-placement-status: 68px;
 	--spacing-loading: 48px;
 	--spacing-loading-shape-width: 33px;
 	--spacing-loading-shape-height: 34px;

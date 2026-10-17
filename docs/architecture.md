@@ -49,3 +49,23 @@ The web version does not copy the rules into TypeScript. TeaVM turns the same Ja
 - Every call answers with a short problem name (`OVERLAP`, `ALREADY_FIRED`, …) or an empty text when it worked.
   `snapshot` answers with the whole game as JSON, written by `Json`, so the browser never has to keep its own copy
   of the rules or of the game.
+
+## The web app
+
+The web app lives in `web/`. It is a React app built with Vite, and it can also be imported as one component,
+`Battleship` from `web/src/app/battleship.tsx`, so the portfolio site can show it.
+
+- `app/` puts the screens together: the name screen, then the game. The game part (placement and battle) and the
+  engine load only when they are needed, and the name screen starts loading them as soon as you type or point at
+  Continue.
+- `features/setup` is the name screen. `features/placement` is fleet placement and `features/battle` is the battle.
+  Each screen keeps its state in its own small store, made when the screen opens and dropped when it closes.
+- `shared/services/engine-service.ts` loads the engine module and checks every value it returns before the app uses
+  it. A value the engine should never return stops the app with an error instead of showing a wrong board.
+- `shared/components/board` draws a 10 × 10 board; `shared/components/fleet-item.tsx` draws one ship in a list.
+- `forest/` holds the Material 3 parts shared with the other projects: buttons, text field, dialog, snackbar, app bar.
+- `shared/hooks/use-reduced-motion.ts` follows the system "reduce motion" setting. When it is on, the computer's reply
+  shows at once instead of after a short pause.
+
+The engine answers your shot and the computer's reply in one call. The battle screen shows your shot at once and the
+reply a moment later, so you can follow both.

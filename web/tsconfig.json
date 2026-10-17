@@ -18,8 +18,7 @@
 		"noEmit": true,
 		"skipLibCheck": true,
 		"paths": {
-			"@/*": ["./src/*"],
-			"@engine/*": ["../build/generated/teavm/js/*"]
+			"@/*": ["./src/*"]
 		}
 	},
 	"include": ["src", "e2e", "scripts", "*.config.ts"]
