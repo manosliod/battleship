@@ -1,9 +1,12 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
+import { showSnackbar } from '@/forest/components/snackbar'
 import type { Snapshot } from '@/shared/types/game'
 import { aFakeSession, aFleet, aSnapshot } from '@/testing/factories'
 
 import { createBattleStore } from './battle-store'
+
+vi.mock('@/forest/components/snackbar', () => ({ showSnackbar: vi.fn(), hideSnackbar: vi.fn() }))
 
 const inBattle = (overrides: Partial<Snapshot> = {}) =>
 	aSnapshot({ phase: 'battle', player: 'Ada', fleet: aFleet(), missing: [], ...overrides })
@@ -18,6 +21,7 @@ function storeWith(snapshots: readonly Snapshot[], fire = vi.fn(() => null)) {
 
 describe('battle store', () => {
 	beforeEach(() => {
+		vi.clearAllMocks()
 		vi.useFakeTimers()
 	})
 
@@ -105,6 +109,7 @@ describe('battle store', () => {
 			dialog: 'over',
 			status: { headline: 'You win', supporting: 'All five enemy ships are sunk.' }
 		})
+		expect(showSnackbar).not.toHaveBeenCalled()
 	})
 
 	it('ends the game when the computer’s reply sinks your last ship', () => {

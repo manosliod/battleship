@@ -53,10 +53,10 @@ function PlacementContent({ player, onBack, onStart }: Omit<PlacementScreenProps
 						</Button>
 					</div>
 					<PlacementFleet className="area-fleet" />
-					<div className="area-start flex">
+					<div className="area-start flex justify-center expanded:justify-start">
 						<Button
 							disabled={!ready}
-							className="w-full expanded:w-auto"
+
 							onClick={() => {
 								if (start(player) === 'started') {
 									onStart()

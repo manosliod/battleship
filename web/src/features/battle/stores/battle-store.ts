@@ -65,7 +65,7 @@ export function createBattleStore({ session, replyDelay }: BattleDependencies) {
 
 		const reveal = (snapshot: Snapshot, reply: ExchangeShot) => {
 			timer = null
-			if (reply.result === 'sunk' && reply.ship) {
+			if (reply.result === 'sunk' && reply.ship && snapshot.phase !== 'over') {
 				showSnackbar(
 					`The computer sank your ${shipName[reply.ship]}. ${left(snapshot.afloat.player.length, 'of your')}`
 				)
@@ -115,7 +115,7 @@ export function createBattleStore({ session, replyDelay }: BattleDependencies) {
 						return
 					}
 					hideSnackbar()
-					if (last.yours.result === 'sunk' && last.yours.ship) {
+					if (last.yours.result === 'sunk' && last.yours.ship && snapshot.phase !== 'over') {
 						showSnackbar(
 							`You sank their ${shipName[last.yours.ship]}. ${left(snapshot.afloat.computer.length, 'enemy')}`
 						)

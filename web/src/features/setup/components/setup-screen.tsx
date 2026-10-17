@@ -53,7 +53,7 @@ export function SetupScreen({ name, onContinue, onIntent }: SetupScreenProps) {
 							onFocus={onIntent}
 						/>
 					</div>
-					<div className="area-continue flex justify-center expanded:justify-start">
+					<div className="area-continue flex justify-center expanded:justify-end">
 						<Button type="submit" onPointerEnter={onIntent}>
 							Continue
 						</Button>
