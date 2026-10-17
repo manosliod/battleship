@@ -16,13 +16,6 @@ java {
     }
 }
 
-sourceSets {
-    main {
-        java.setSrcDirs(listOf("src"))
-        java.exclude("test/**")
-    }
-}
-
 dependencies {
     testImplementation(platform(libs.junit.bom))
     testImplementation(libs.junit.jupiter)
@@ -31,7 +24,7 @@ dependencies {
 }
 
 application {
-    mainClass = "battleship.BattleShip"
+    mainClass = "dev.manosliod.battleship.app.Main"
 }
 
 tasks.withType<JavaCompile>().configureEach {
