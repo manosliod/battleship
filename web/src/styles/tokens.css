@@ -1,0 +1,196 @@
+@theme {
+	--breakpoint-*: initial;
+	--breakpoint-medium: 600px;
+	--breakpoint-expanded: 840px;
+
+	--font-sans: 'Roboto', system-ui, sans-serif;
+
+	--text-headline-medium: 28px;
+	--text-headline-medium--line-height: 36px;
+	--text-headline-medium--letter-spacing: 0;
+	--text-headline-medium--font-weight: 400;
+	--text-headline-small: 24px;
+	--text-headline-small--line-height: 32px;
+	--text-headline-small--letter-spacing: 0;
+	--text-headline-small--font-weight: 400;
+	--text-title-large: 22px;
+	--text-title-large--line-height: 28px;
+	--text-title-large--letter-spacing: 0;
+	--text-title-large--font-weight: 400;
+	--text-title-medium: 16px;
+	--text-title-medium--line-height: 24px;
+	--text-title-medium--letter-spacing: 0.15px;
+	--text-title-medium--font-weight: 500;
+	--text-title-small: 14px;
+	--text-title-small--line-height: 20px;
+	--text-title-small--letter-spacing: 0.1px;
+	--text-title-small--font-weight: 500;
+	--text-body-large: 16px;
+	--text-body-large--line-height: 24px;
+	--text-body-large--letter-spacing: 0.5px;
+	--text-body-large--font-weight: 400;
+	--text-body-medium: 14px;
+	--text-body-medium--line-height: 20px;
+	--text-body-medium--letter-spacing: 0.25px;
+	--text-body-medium--font-weight: 400;
+	--text-body-small: 12px;
+	--text-body-small--line-height: 16px;
+	--text-body-small--letter-spacing: 0.4px;
+	--text-body-small--font-weight: 400;
+	--text-label-large: 14px;
+	--text-label-large--line-height: 20px;
+	--text-label-large--letter-spacing: 0.1px;
+	--text-label-large--font-weight: 500;
+	--text-label-medium: 12px;
+	--text-label-medium--line-height: 16px;
+	--text-label-medium--letter-spacing: 0.5px;
+	--text-label-medium--font-weight: 500;
+	--text-label-small: 11px;
+	--text-label-small--line-height: 16px;
+	--text-label-small--letter-spacing: 0.5px;
+	--text-label-small--font-weight: 500;
+
+	--radius-extra-small: 4px;
+	--radius-medium: 12px;
+	--radius-large: 16px;
+	--radius-extra-large: 28px;
+	--radius-full: 1000px;
+
+	--spacing-cell: 34px;
+	--spacing-cell-medium: 30px;
+	--spacing-cell-small: 18px;
+	--spacing-cell-gap: 2px;
+	--spacing-coordinates: 20px;
+	--spacing-board: 380px;
+	--spacing-board-medium: 340px;
+	--spacing-board-small: 198px;
+	--spacing-fleet-segment: 12px;
+	--spacing-miss-dot: 8px;
+	--spacing-miss-dot-small: 6px;
+	--spacing-mark: 22px;
+	--spacing-mark-medium: 20px;
+	--spacing-mark-small: 14px;
+	--spacing-cell-ring: 2px;
+	--spacing-focus-ring: 3px;
+	--spacing-focus-offset: 2px;
+	--spacing-field-border-focus: 2px;
+	--spacing-icon: 24px;
+	--spacing-icon-small: 18px;
+	--spacing-touch: 48px;
+	--spacing-control: 40px;
+	--spacing-field: 56px;
+	--spacing-dialog: 312px;
+	--spacing-dialog-margin: 24px;
+	--spacing-snackbar: 400px;
+	--spacing-form: 400px;
+	--spacing-side-pane: 360px;
+	--spacing-loading: 48px;
+	--spacing-loading-shape-width: 33px;
+	--spacing-loading-shape-height: 34px;
+
+	--shadow-elevation-3: 0 1px 3px 0 rgb(0 0 0 / 30%), 0 4px 8px 3px rgb(0 0 0 / 15%);
+
+	--ease-emphasized: cubic-bezier(0.2, 0, 0, 1);
+	--ease-emphasized-decelerate: cubic-bezier(0.05, 0.7, 0.1, 1);
+	--ease-emphasized-accelerate: cubic-bezier(0.3, 0, 0.8, 0.15);
+	--ease-standard: cubic-bezier(0.2, 0, 0, 1);
+}
+
+:root {
+	--motion-duration-short1: 50ms;
+	--motion-duration-short2: 100ms;
+	--motion-duration-short3: 150ms;
+	--motion-duration-short4: 200ms;
+	--motion-duration-medium1: 250ms;
+	--motion-duration-medium2: 300ms;
+	--motion-duration-long2: 500ms;
+
+	--state-hover: 8%;
+	--state-focus: 10%;
+	--state-pressed: 10%;
+	--scrim-opacity: 32%;
+
+	--sys-primary: #006b60;
+	--sys-on-primary: #ffffff;
+	--sys-primary-container: #9ef2e3;
+	--sys-on-primary-container: #2e4c47;
+	--sys-secondary: #4b645f;
+	--sys-on-secondary: #ffffff;
+	--sys-secondary-container: #cae6df;
+	--sys-on-secondary-container: #334b47;
+	--sys-error: #b3261e;
+	--sys-on-error: #ffffff;
+	--sys-error-container: #f9dedc;
+	--sys-on-error-container: #8c1d18;
+	--sys-surface: #f4fbf8;
+	--sys-on-surface: #171d1b;
+	--sys-on-surface-variant: #3f4946;
+	--sys-outline: #6f7976;
+	--sys-outline-variant: #bec9c5;
+	--sys-scrim: #000000;
+	--sys-inverse-surface: #252b2a;
+	--sys-inverse-on-surface: #e9efec;
+	--sys-surface-container-lowest: #ffffff;
+	--sys-surface-container-low: #eff5f2;
+	--sys-surface-container: #e9efec;
+	--sys-surface-container-high: #e3eae7;
+	--sys-surface-container-highest: #dde4e1;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--sys-primary: #82d5c7;
+		--sys-on-primary: #003731;
+		--sys-primary-container: #006b5f;
+		--sys-on-primary-container: #ffffff;
+		--sys-secondary: #b1ccc6;
+		--sys-on-secondary: #1c3530;
+		--sys-secondary-container: #334b47;
+		--sys-on-secondary-container: #cce8e2;
+		--sys-error: #f2b8b5;
+		--sys-on-error: #601410;
+		--sys-error-container: #8c1d18;
+		--sys-on-error-container: #f9dedc;
+		--sys-surface: #0e1513;
+		--sys-on-surface: #dde4e1;
+		--sys-on-surface-variant: #bec9c5;
+		--sys-outline: #88938f;
+		--sys-outline-variant: #3f4946;
+		--sys-scrim: #000000;
+		--sys-inverse-surface: #dde4e1;
+		--sys-inverse-on-surface: #303634;
+		--sys-surface-container-lowest: #090f0e;
+		--sys-surface-container-low: #171d1b;
+		--sys-surface-container: #1a211f;
+		--sys-surface-container-high: #252b2a;
+		--sys-surface-container-highest: #303634;
+	}
+}
+
+@theme inline {
+	--color-primary: var(--sys-primary);
+	--color-on-primary: var(--sys-on-primary);
+	--color-primary-container: var(--sys-primary-container);
+	--color-on-primary-container: var(--sys-on-primary-container);
+	--color-secondary: var(--sys-secondary);
+	--color-on-secondary: var(--sys-on-secondary);
+	--color-secondary-container: var(--sys-secondary-container);
+	--color-on-secondary-container: var(--sys-on-secondary-container);
+	--color-error: var(--sys-error);
+	--color-on-error: var(--sys-on-error);
+	--color-error-container: var(--sys-error-container);
+	--color-on-error-container: var(--sys-on-error-container);
+	--color-surface: var(--sys-surface);
+	--color-on-surface: var(--sys-on-surface);
+	--color-on-surface-variant: var(--sys-on-surface-variant);
+	--color-outline: var(--sys-outline);
+	--color-outline-variant: var(--sys-outline-variant);
+	--color-scrim: var(--sys-scrim);
+	--color-inverse-surface: var(--sys-inverse-surface);
+	--color-inverse-on-surface: var(--sys-inverse-on-surface);
+	--color-surface-container-lowest: var(--sys-surface-container-lowest);
+	--color-surface-container-low: var(--sys-surface-container-low);
+	--color-surface-container: var(--sys-surface-container);
+	--color-surface-container-high: var(--sys-surface-container-high);
+	--color-surface-container-highest: var(--sys-surface-container-highest);
+}

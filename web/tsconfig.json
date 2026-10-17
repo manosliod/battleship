@@ -1,0 +1,26 @@
+{
+	"compilerOptions": {
+		"target": "es2023",
+		"lib": ["es2023", "dom", "dom.iterable"],
+		"jsx": "react-jsx",
+		"types": ["vite/client", "node", "@testing-library/jest-dom/vitest"],
+		"strict": true,
+		"noUncheckedIndexedAccess": true,
+		"exactOptionalPropertyTypes": true,
+		"noImplicitOverride": true,
+		"noPropertyAccessFromIndexSignature": true,
+		"noFallthroughCasesInSwitch": true,
+		"verbatimModuleSyntax": true,
+		"erasableSyntaxOnly": true,
+		"isolatedModules": true,
+		"moduleDetection": "force",
+		"module": "preserve",
+		"noEmit": true,
+		"skipLibCheck": true,
+		"paths": {
+			"@/*": ["./src/*"],
+			"@engine/*": ["../build/generated/teavm/js/*"]
+		}
+	},
+	"include": ["src", "e2e", "scripts", "*.config.ts"]
+}

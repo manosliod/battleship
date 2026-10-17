@@ -1,0 +1,77 @@
+@import 'tailwindcss';
+@import '@fontsource/roboto/latin-400.css';
+@import '@fontsource/roboto/latin-500.css';
+@import './tokens.css';
+
+@layer base {
+	html {
+		color-scheme: light dark;
+		-webkit-text-size-adjust: 100%;
+		text-size-adjust: 100%;
+	}
+
+	html,
+	body {
+		overscroll-behavior: none;
+	}
+
+	body {
+		@apply bg-surface font-sans text-on-surface antialiased;
+		-webkit-tap-highlight-color: transparent;
+		padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom)
+			env(safe-area-inset-left);
+	}
+
+	button,
+	[role='gridcell'] {
+		touch-action: manipulation;
+		user-select: none;
+		-webkit-user-select: none;
+		-webkit-touch-callout: none;
+	}
+
+	:focus-visible {
+		outline: var(--spacing-focus-ring) solid var(--color-secondary);
+		outline-offset: var(--spacing-focus-offset);
+	}
+}
+
+@utility state-layer {
+	&::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		border-radius: inherit;
+		background-color: currentColor;
+		opacity: 0;
+		pointer-events: none;
+		transition: opacity var(--motion-duration-short2) linear;
+	}
+
+	@media (hover: hover) and (pointer: fine) {
+		&:hover:not(:disabled, [aria-disabled='true'])::after {
+			opacity: var(--state-hover);
+		}
+	}
+
+	&:focus-visible::after {
+		opacity: var(--state-focus);
+	}
+
+	&:active:not(:disabled, [aria-disabled='true'])::after {
+		opacity: var(--state-pressed);
+	}
+}
+
+@utility target {
+	&::before {
+		content: '';
+		position: absolute;
+		inset: 50% auto auto 50%;
+		min-width: 100%;
+		min-height: 100%;
+		width: var(--spacing-touch);
+		height: var(--spacing-touch);
+		translate: -50% -50%;
+	}
+}
