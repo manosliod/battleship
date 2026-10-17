@@ -10,3 +10,14 @@
   name is announced and its cells are shown.
 - You cannot fire at the same cell twice.
 - Whoever sinks all five enemy ships first wins.
+
+## How the computer plays
+
+The computer only sees what you would see: where it fired, what happened, and which ships sank.
+
+- **Hunting.** While none of your ships is hit, it fires on a spaced pattern, like the black squares of a chess
+  board. The gap matches the shortest ship still afloat, so no ship can hide between its shots.
+- **Targeting.** After a hit it fires at the cells next to it. After two hits in a line it keeps going along that
+  line, and turns back when it meets water or the edge.
+- When the ship sinks it goes back to hunting.
+- It picks at random among equally good cells, so no two games are the same.
