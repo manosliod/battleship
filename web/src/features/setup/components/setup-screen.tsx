@@ -31,7 +31,7 @@ export function SetupScreen({ name, onContinue, onIntent }: SetupScreenProps) {
 	)
 
 	return (
-		<div className="flex min-h-dvh flex-col">
+		<div className="flex flex-1 flex-col">
 			<AppBar title="Battleship" />
 			<main className="flex flex-1 px-4 py-6 expanded:justify-center expanded:px-6 expanded:pt-16">
 				<form action={submit} noValidate className="setup-layout">

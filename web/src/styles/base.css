@@ -19,9 +19,18 @@
 
 	body {
 		@apply bg-surface font-sans text-on-surface antialiased;
+		display: flex;
+		min-height: 100dvh;
+		flex-direction: column;
 		-webkit-tap-highlight-color: transparent;
 		padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom)
 			env(safe-area-inset-left);
+	}
+
+	#app {
+		display: flex;
+		flex: 1;
+		flex-direction: column;
 	}
 
 	button,

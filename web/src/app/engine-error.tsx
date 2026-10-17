@@ -4,7 +4,7 @@ import { Icon } from '@/forest/components/icon'
 
 export function EngineError({ onRetry }: { onRetry: () => void }) {
 	return (
-		<div className="flex min-h-dvh flex-col">
+		<div className="flex flex-1 flex-col">
 			<AppBar title="Battleship" />
 			<main role="alert" className="flex flex-1 flex-col items-center justify-center gap-4 px-6 text-center">
 				<Icon name="error" className="size-touch text-error" />

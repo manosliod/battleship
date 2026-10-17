@@ -52,7 +52,7 @@ function BattleContent({ player, onLeave, onPlayAgain }: Omit<BattleScreenProps,
 	}
 
 	return (
-		<div className="flex min-h-dvh flex-col">
+		<div className="flex flex-1 flex-col">
 			<AppBar
 				title="Battle"
 				leading={<IconButton icon="arrowBack" label="Back" onClick={turn === 'over' ? leave : openLeave} />}

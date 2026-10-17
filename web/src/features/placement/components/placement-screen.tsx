@@ -33,7 +33,7 @@ function PlacementContent({ player, onBack, onStart }: Omit<PlacementScreenProps
 	const ready = current === null
 
 	return (
-		<div className="flex min-h-dvh flex-col">
+		<div className="flex flex-1 flex-col">
 			<AppBar title="Place your fleet" leading={<IconButton icon="arrowBack" label="Back" onClick={onBack} />} />
 			<main className="flex flex-1 px-4 pt-4 pb-6 expanded:justify-center expanded:p-6">
 				<div className="placement-layout">
