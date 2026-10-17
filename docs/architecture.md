@@ -4,14 +4,20 @@ The program asks for a player name. The game itself lives in `game/` and is desc
 
 ```mermaid
 flowchart LR
-    Main --> PlayerNameCollector
+    Main --> ConsoleGame
+    ConsoleGame --> PlayerNameCollector
     PlayerNameCollector --> NameInput
-    SwingNameInput -.implements.-> NameInput
-    Main --> SwingNameInput
+    ConsoleNameInput -.implements.-> NameInput
+    ConsoleGame --> Battle
+    Battle --> Game
+    Battle --> HuntTargetTargeting
 ```
 
-- `app/Main` builds the parts and starts the program.
-- `app/SwingNameInput` shows the Swing dialog. It is the only class that knows about Swing.
+- `app/Main` builds the parts and starts the program in the terminal.
+- `app/cli/ConsoleGame` is the terminal game: name, fleet placement, battle, play again. It talks to the player only
+  through `Console`, so tests can type for the player and read what was printed.
+- `app/cli/BoardView` draws a board as text. `app/cli/ConsoleNameInput` asks for the name in the terminal.
+- When the input ends (Ctrl+D, or the end of a piped file), the game stops at once without an error.
 - `player/application/NameInput` is how the program asks for text. Tests use a scripted version.
 - `player/domain/PlayerName` is a name with the spaces around it removed. A name made only of spaces is not a name.
 - `player/application/PlayerNameCollector` asks for a name. A blank answer makes it ask again with a short

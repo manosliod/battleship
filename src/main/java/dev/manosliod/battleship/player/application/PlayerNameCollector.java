@@ -5,8 +5,8 @@ import java.util.Optional;
 
 public final class PlayerNameCollector {
 
-    static final String MESSAGE = "Please insert your name and press 'OK'";
-    static final String BLANK_MESSAGE = "Your name can't be blank. Please insert your name and press 'OK'";
+    static final String MESSAGE = "Please insert your name";
+    static final String BLANK_MESSAGE = "Your name can't be blank. Please insert your name";
 
     private final NameInput input;
 

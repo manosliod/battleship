@@ -16,3 +16,21 @@ The recordings in `docs/portfolio/before/` stay as they were: they show the old 
 the first prompt shows the recorded message, and that a name is accepted on the first prompt (`name-ok`). The flows
 whose result changed (`name-empty`, `name-whitespace`, `name-cancel-then-ok`, `name-cancel-x3-then-ok`) are tested
 with new inputs in `PlayerNameCollectorTest`, so blank names and Cancel stay tested.
+
+## The Swing dialog is gone; the game runs in the terminal and in the browser
+
+The 2022 program was a single Swing dialog. The game now runs in the terminal, and a web version is built on the same
+Java code. A Swing window would be a third screen to design and keep up to date, for no extra value.
+
+The name question lost its "and press 'OK'" ending, because a terminal has no OK button. It now reads
+"Please insert your name:". The tests check that this is the 2022 text without that ending.
+
+## Running the terminal game
+
+```sh
+./gradlew installDist
+build/install/battleship/bin/battleship
+```
+
+Ships go in with a start cell and a direction, for example `A1 across` or `B2 down`. `random` places the ships that
+are left, and `reset` starts the placement again.
