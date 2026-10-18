@@ -13,19 +13,19 @@ public final class Fleets {
     public static Fleet rows() {
         return new Fleet(List.of(
                 new Placement(ShipType.CARRIER, at("A1"), Orientation.HORIZONTAL),
-                new Placement(ShipType.BATTLESHIP, at("C1"), Orientation.HORIZONTAL),
-                new Placement(ShipType.CRUISER, at("E1"), Orientation.HORIZONTAL),
-                new Placement(ShipType.SUBMARINE, at("G1"), Orientation.HORIZONTAL),
-                new Placement(ShipType.DESTROYER, at("I1"), Orientation.HORIZONTAL)));
+                new Placement(ShipType.BATTLESHIP, at("A3"), Orientation.HORIZONTAL),
+                new Placement(ShipType.CRUISER, at("A5"), Orientation.HORIZONTAL),
+                new Placement(ShipType.SUBMARINE, at("A7"), Orientation.HORIZONTAL),
+                new Placement(ShipType.DESTROYER, at("A9"), Orientation.HORIZONTAL)));
     }
 
     public static Fleet columns() {
         return new Fleet(List.of(
-                new Placement(ShipType.CARRIER, at("A10"), Orientation.VERTICAL),
-                new Placement(ShipType.BATTLESHIP, at("A8"), Orientation.VERTICAL),
-                new Placement(ShipType.CRUISER, at("A6"), Orientation.VERTICAL),
-                new Placement(ShipType.SUBMARINE, at("A4"), Orientation.VERTICAL),
-                new Placement(ShipType.DESTROYER, at("A2"), Orientation.VERTICAL)));
+                new Placement(ShipType.CARRIER, at("J1"), Orientation.VERTICAL),
+                new Placement(ShipType.BATTLESHIP, at("H1"), Orientation.VERTICAL),
+                new Placement(ShipType.CRUISER, at("F1"), Orientation.VERTICAL),
+                new Placement(ShipType.SUBMARINE, at("D1"), Orientation.VERTICAL),
+                new Placement(ShipType.DESTROYER, at("B1"), Orientation.VERTICAL)));
     }
 
     public static List<Coordinate> cellsOf(Fleet fleet) {

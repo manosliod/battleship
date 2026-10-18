@@ -20,6 +20,7 @@ class PlayerNameCollectorCharacterizationTest {
 
     private static final Path BEFORE = Path.of("docs", "portfolio", "before");
     private static final String CANCEL = "CANCEL";
+    private static final String DIALOG_BUTTON_HINT = " and press 'OK'";
 
     private static final class ScriptedPrompt implements NameInput {
         private final List<String> steps;
@@ -88,11 +89,12 @@ class PlayerNameCollectorCharacterizationTest {
                 "name-cancel-then-ok",
                 "name-cancel-x3-then-ok",
             })
-    void firstPromptMatchesTheRecordedDialog(String flow) throws IOException {
+    void firstPromptIsTheRecordedDialogTextWithoutItsButtonHint(String flow) throws IOException {
         ScriptedPrompt prompt = new ScriptedPrompt(List.of("Ada"));
         new PlayerNameCollector(prompt).collect();
 
-        assertThat(prompt.messages).containsExactly(PlayerNameCollector.MESSAGE).containsExactly(recordedLabel(flow));
+        assertThat(prompt.messages).containsExactly(PlayerNameCollector.MESSAGE);
+        assertThat(recordedLabel(flow)).isEqualTo(PlayerNameCollector.MESSAGE + DIALOG_BUTTON_HINT);
     }
 
     @Test

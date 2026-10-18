@@ -23,9 +23,9 @@ class GameTest {
 
     @Test
     void turnsAlternateWhateverTheOutcome() {
-        Game.Move hit = start().fire(Side.PLAYER, at("A10"));
+        Game.Move hit = start().fire(Side.PLAYER, at("J1"));
 
-        assertThat(hit.shot()).isEqualTo(new Shot(Side.PLAYER, at("A10"), new Outcome.Hit()));
+        assertThat(hit.shot()).isEqualTo(new Shot(Side.PLAYER, at("J1"), new Outcome.Hit()));
         assertThat(hit.game().status()).isEqualTo(new Status.Turn(Side.COMPUTER));
 
         Game.Move reply = hit.game().fire(Side.COMPUTER, at("J10"));
@@ -33,7 +33,7 @@ class GameTest {
         assertThat(reply.shot().outcome()).isEqualTo(new Outcome.Miss());
         assertThat(reply.game().status()).isEqualTo(new Status.Turn(Side.PLAYER));
         assertThat(reply.game().home().firedAt(at("J10"))).isTrue();
-        assertThat(reply.game().enemy().firedAt(at("A10"))).isTrue();
+        assertThat(reply.game().enemy().firedAt(at("J1"))).isTrue();
     }
 
     @Test

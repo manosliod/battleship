@@ -23,7 +23,7 @@ class FleetPlacerTest {
 
     @Test
     void completeKeepsTheShipsAlreadyPlaced() {
-        Placement carrier = new Placement(ShipType.CARRIER, at("E3"), Orientation.VERTICAL);
+        Placement carrier = new Placement(ShipType.CARRIER, at("C5"), Orientation.VERTICAL);
         Fleet fleet =
                 new FleetPlacer(new Random(7)::nextInt).complete(Fleet.empty().with(carrier));
 
