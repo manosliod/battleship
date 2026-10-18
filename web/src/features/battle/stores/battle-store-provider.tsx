@@ -31,7 +31,7 @@ export function useBattleActions() {
 		aim: guard(actions.aim),
 		fire: guard(actions.fire),
 		openLeave: guard(actions.openLeave),
-		closeDialog: guard(actions.closeDialog),
-		dispose: guard(actions.dispose)
+		closeDialog: guard(actions.closeDialog)
 	}
 }
+export const useDisposeBattle = () => useBattleStore((state) => state.actions.dispose)

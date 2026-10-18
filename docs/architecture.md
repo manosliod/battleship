@@ -65,7 +65,9 @@ The web app lives in `web/`. It is a React app built with Vite, and it can also 
 - `shared/components/board` draws a 10 × 10 board; `shared/components/fleet-item.tsx` draws one ship in a list.
 - `forest/` holds the Material 3 parts shared with the other projects: buttons, text field, dialog, snackbar, app bar.
 - `shared/hooks/use-guard.ts` catches a failure in a button or board action (an engine answer the app does not
-  understand) and shows the error screen with Try again, instead of leaving a screen that no longer answers.
+  understand) and shows "Something went wrong in the game" with Try again, instead of leaving a screen that no
+  longer answers. A failed engine download shows "The game engine didn't start" instead.
+- When the battle screen goes away, for any reason, it stops the computer's pending reply and hides the snackbar.
 - `shared/hooks/use-reduced-motion.ts` follows the system "reduce motion" setting. When it is on, the computer's reply
   shows at once instead of after a short pause.
 

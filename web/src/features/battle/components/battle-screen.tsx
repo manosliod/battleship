@@ -11,6 +11,7 @@ import {
 	useAim,
 	useBattleActions,
 	useDialog,
+	useDisposeBattle,
 	useHomeShots,
 	useSnapshot,
 	useTurn
@@ -43,19 +44,15 @@ function BattleContent({ player, onLeave, onPlayAgain }: Omit<BattleScreenProps,
 	const homeCells = useHomeCells()
 	const enemyFleet = useEnemyFleet()
 	const yourFleet = useYourFleet()
-	const { aim: aimAt, openLeave, dispose } = useBattleActions()
+	const { aim: aimAt, openLeave } = useBattleActions()
+	const dispose = useDisposeBattle()
 	const fleetTitle = `${player}’s fleet`
 
-	const leave = () => {
-		dispose()
-		onLeave()
-	}
-
 	return (
-		<div className="flex flex-1 flex-col">
+		<div className="flex flex-1 flex-col" ref={() => dispose}>
 			<AppBar
 				title="Battle"
-				leading={<IconButton icon="arrowBack" label="Back" onClick={turn === 'over' ? leave : openLeave} />}
+				leading={<IconButton icon="arrowBack" label="Back" onClick={turn === 'over' ? onLeave : openLeave} />}
 			/>
 			<main className="flex flex-1 p-4 medium:p-6">
 				<div className="battle-layout">
@@ -91,7 +88,7 @@ function BattleContent({ player, onLeave, onPlayAgain }: Omit<BattleScreenProps,
 					<FleetList title="Your ships" items={yourFleet} className="area-ylist hidden medium:flex" />
 				</div>
 			</main>
-			<BattleDialogs player={player} onLeave={leave} onPlayAgain={onPlayAgain} />
+			<BattleDialogs player={player} onLeave={onLeave} onPlayAgain={onPlayAgain} />
 		</div>
 	)
 }
@@ -102,7 +99,7 @@ function BattleDialogs({ player, onLeave, onPlayAgain }: BattleDialogsProps) {
 	const dialog = useDialog()
 	const snapshot = useSnapshot()
 	const home = useHomeShots()
-	const { closeDialog, dispose } = useBattleActions()
+	const { closeDialog } = useBattleActions()
 	const onOpenChange = (open: boolean) => {
 		if (!open) {
 			closeDialog()
@@ -122,10 +119,7 @@ function BattleDialogs({ player, onLeave, onPlayAgain }: BattleDialogsProps) {
 				}
 				cancel="Close"
 				confirm="Play again"
-				onConfirm={() => {
-					dispose()
-					onPlayAgain()
-				}}
+				onConfirm={onPlayAgain}
 			/>
 			<Dialog
 				open={dialog === 'leave'}
