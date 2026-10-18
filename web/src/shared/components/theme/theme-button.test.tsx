@@ -7,7 +7,12 @@ import { mockWindowClass } from '@/testing/window'
 
 const renderButton = async () => {
 	const { ThemeButton } = await import('./theme-button')
-	render(<ThemeButton />)
+	const { SnackbarProvider } = await import('@/forest/components/snackbar')
+	render(
+		<SnackbarProvider>
+			<ThemeButton />
+		</SnackbarProvider>
+	)
 	return screen.getByRole('button', { name: 'Theme' })
 }
 
@@ -18,7 +23,7 @@ const open = async (button: HTMLElement) => {
 		fireEvent.click(button)
 		await import('./theme-panel')
 	})
-	return screen.findByRole('dialog')
+	return screen.findByRole('dialog', { name: 'Theme' })
 }
 
 describe('theme button', () => {
@@ -30,6 +35,7 @@ describe('theme button', () => {
 
 	afterEach(() => {
 		vi.unstubAllGlobals()
+		vi.doUnmock('./theme-panel')
 	})
 
 	it('opens a sheet without Done on compact', async () => {
@@ -58,7 +64,7 @@ describe('theme button', () => {
 		expect(within(dialog).getByRole('radio', { name: 'Dark' })).toBeChecked()
 		expect(document.documentElement.dataset['theme']).toBe('dark')
 		expect(localStorage.getItem('theme')).toBe('dark')
-		expect(screen.getByRole('dialog')).toBeInTheDocument()
+		expect(screen.getByRole('dialog', { name: 'Theme' })).toBeInTheDocument()
 	})
 
 	it('starts from the stored choice', async () => {
@@ -66,5 +72,32 @@ describe('theme button', () => {
 		localStorage.setItem('theme', 'light')
 		const dialog = await open(await renderButton())
 		expect(within(dialog).getByRole('radio', { name: 'Light' })).toBeChecked()
+	})
+
+	it('keeps the sheet while open even if the window grows to medium', async () => {
+		const list = mockWindowClass(true)
+		const sheet = await open(await renderButton())
+		list.matches = true
+		fireEvent.click(within(sheet).getByRole('radio', { name: 'Dark' }))
+		expect(
+			within(screen.getByRole('dialog', { name: 'Theme' })).queryByRole('button', { name: 'Done' })
+		).not.toBeInTheDocument()
+	})
+
+	it('says so in a snackbar when the panel cannot be downloaded, and opens on the next try', async () => {
+		mockWindowClass(false)
+		vi.doMock('./theme-panel', () => {
+			throw new TypeError('Failed to fetch dynamically imported module')
+		})
+		const button = await renderButton()
+		await act(async () => {
+			fireEvent.click(button)
+			await Promise.resolve()
+		})
+		expect(await screen.findByText('Couldn’t open Theme. Try again.')).toBeInTheDocument()
+		expect(screen.queryByRole('radiogroup', { name: 'Theme' })).not.toBeInTheDocument()
+		vi.doUnmock('./theme-panel')
+		const dialog = await open(button)
+		expect(within(dialog).getByRole('radiogroup', { name: 'Theme' })).toBeInTheDocument()
 	})
 })

@@ -6,6 +6,7 @@ export function mockWindowClass(compact: boolean) {
 		'matchMedia',
 		vi.fn(() => list)
 	)
+	return list
 }
 
 type StorageOverrides = Partial<Pick<Storage, 'getItem' | 'setItem'>>

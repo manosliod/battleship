@@ -132,7 +132,7 @@ mark in place of its icon.
   of the top app bar on every screen, at every width (on setup and engine screens, which keep their centred title, it
   sits at the same trailing position). Its icon is the current choice. It is never disabled.
 - **Compact (below 600 dp)**: the button opens the Forest **Theme sheet** (modal bottom sheet with drag handle, title
-  "Theme", the picker) over the 32 % scrim. Scrim tap, swipe down, Escape or Back close it. Frames: "Battle · Theme
+  "Theme", the picker) over the 32 % scrim. Scrim tap, swipe down or Escape close it. Frames: "Battle · Theme
   sheet · Compact · Light/Dark".
 - **Medium and expanded (600 dp and up)**: the button opens the Forest **Theme dialog** (basic dialog, centred, headline
   "Theme", the picker, one text button "Done") over the 32 % scrim. Done, Escape or scrim tap close it. There is no

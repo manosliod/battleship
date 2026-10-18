@@ -9,9 +9,11 @@ const blocked = () => {
 }
 
 const metas = () =>
-	[...document.querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]')].map((meta) => meta.media)
+	[...document.querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]')].map((meta) =>
+		meta.getAttribute('media')
+	)
 
-const colorScheme = () => document.querySelector<HTMLMetaElement>('meta[name="color-scheme"]')?.content
+const colorScheme = () => document.querySelector<HTMLMetaElement>('meta[name="color-scheme"]')?.getAttribute('content')
 
 describe('theme service', () => {
 	beforeEach(() => {
@@ -62,6 +64,18 @@ describe('theme service', () => {
 		expect(document.documentElement.dataset['theme']).toBe('dark')
 		expect(colorScheme()).toBe('dark')
 		expect(metas()).toEqual(['not all', 'all'])
+	})
+
+	it('reads a choice from this storage only, and a cleared storage as System', () => {
+		const service = createThemeService({ storage: () => localStorage, root: () => document })
+		const event = (init: StorageEventInit) => new StorageEvent('storage', { storageArea: localStorage, ...init })
+		expect(service.readEvent(event({ key: 'theme', newValue: 'dark' }))).toBe('dark')
+		expect(service.readEvent(event({ key: 'theme', newValue: 'sepia' }))).toBe('system')
+		expect(service.readEvent(event({ key: null }))).toBe('system')
+		expect(service.readEvent(event({ key: 'other', newValue: 'dark' }))).toBeNull()
+		expect(service.readEvent(event({ key: 'theme', newValue: 'dark', storageArea: sessionStorage }))).toBeNull()
+		const blockedService = createThemeService({ storage: blocked, root: () => document })
+		expect(blockedService.readEvent(event({ key: 'theme', newValue: 'dark' }))).toBeNull()
 	})
 
 	it('hands both back to the system on System, so a system change needs no script', () => {

@@ -14,8 +14,7 @@ export type ThemeService = Readonly<{
 	read: () => ThemeChoice
 	save: (theme: ThemeChoice) => void
 	apply: (theme: ThemeChoice) => void
-	parse: (value: string | null) => ThemeChoice
-	key: string
+	readEvent: (event: StorageEvent) => ThemeChoice | null
 }>
 
 const metaMedia = (scheme: string | undefined, theme: ThemeChoice) => {
@@ -31,9 +30,15 @@ export function createThemeService({ storage, root }: ThemeServiceDeps): ThemeSe
 		return parsed.success ? parsed.data : 'system'
 	}
 
+	const isOwnStorage = (area: Storage | null) => {
+		try {
+			return area !== null && area === storage()
+		} catch {
+			return false
+		}
+	}
+
 	return {
-		key: storageKey,
-		parse,
 		read: () => {
 			try {
 				return parse(storage().getItem(storageKey))
@@ -48,15 +53,24 @@ export function createThemeService({ storage, root }: ThemeServiceDeps): ThemeSe
 				return
 			}
 		},
+		readEvent: (event) => {
+			if (!isOwnStorage(event.storageArea)) {
+				return null
+			}
+			if (event.key === null) {
+				return 'system'
+			}
+			return event.key === storageKey ? parse(event.newValue) : null
+		},
 		apply: (theme) => {
 			const document = root()
 			document.documentElement.dataset['theme'] = theme
 			const colorScheme = document.querySelector<HTMLMetaElement>('meta[name="color-scheme"]')
 			if (colorScheme) {
-				colorScheme.content = theme === 'system' ? 'light dark' : theme
+				colorScheme.setAttribute('content', theme === 'system' ? 'light dark' : theme)
 			}
 			for (const meta of document.querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]')) {
-				meta.media = metaMedia(meta.dataset['scheme'], theme)
+				meta.setAttribute('media', metaMedia(meta.dataset['scheme'], theme))
 			}
 		}
 	}

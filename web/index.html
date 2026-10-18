@@ -10,20 +10,23 @@
 		<meta name="theme-color" content="#0e1513" media="(prefers-color-scheme: dark)" data-scheme="dark" />
 		<meta name="color-scheme" content="light dark" />
 		<script>
-			let theme = 'system'
-			try {
-				const stored = localStorage.getItem('theme')
-				if (stored === 'light' || stored === 'dark') {
-					theme = stored
+			;(() => {
+				const choices = ['system', 'light', 'dark']
+				let theme = 'system'
+				try {
+					const stored = localStorage.getItem('theme')
+					if (choices.includes(stored)) {
+						theme = stored
+					}
+				} catch {}
+				document.documentElement.dataset.theme = theme
+				if (theme !== 'system') {
+					document.querySelector('meta[name="color-scheme"]').setAttribute('content', theme)
+					for (const meta of document.querySelectorAll('meta[name="theme-color"]')) {
+						meta.setAttribute('media', meta.dataset.scheme === theme ? 'all' : 'not all')
+					}
 				}
-			} catch {}
-			document.documentElement.dataset.theme = theme
-			if (theme !== 'system') {
-				document.querySelector('meta[name="color-scheme"]').content = theme
-				for (const meta of document.querySelectorAll('meta[name="theme-color"]')) {
-					meta.media = meta.dataset.scheme === theme ? 'all' : 'not all'
-				}
-			}
+			})()
 		</script>
 		<meta
 			name="description"
