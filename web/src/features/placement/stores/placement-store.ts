@@ -54,9 +54,9 @@ export function createPlacementStore(session: EngineSession) {
 	return createStore<PlacementState>()((set, get) => {
 		const fleetNow = () => session.snapshot().fleet
 
-		const settle = (current: Ship | null = firstMissing(fleetNow())) => {
+		const settle = (current?: Ship | null) => {
 			const fleet = fleetNow()
-			set({ fleet, current, refusal: null })
+			set({ fleet, current: current === undefined ? firstMissing(fleet) : current, refusal: null })
 		}
 
 		const initial = fleetNow()
