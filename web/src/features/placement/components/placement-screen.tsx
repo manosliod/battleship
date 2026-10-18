@@ -2,6 +2,7 @@ import { AppBar } from '@/forest/components/app-bar'
 import { Button } from '@/forest/components/button'
 import { IconButton } from '@/forest/components/icon-button'
 import { Board } from '@/shared/components/board/board'
+import { ThemeButton } from '@/shared/components/theme/theme-button'
 import type { EngineSession } from '@/shared/types/game'
 
 import { usePlacementCells } from '../hooks/use-placement-cells'
@@ -34,7 +35,11 @@ function PlacementContent({ player, onBack, onStart }: Omit<PlacementScreenProps
 
 	return (
 		<div className="flex flex-1 flex-col">
-			<AppBar title="Place your fleet" leading={<IconButton icon="arrowBack" label="Back" onClick={onBack} />} />
+			<AppBar
+				title="Place your fleet"
+				leading={<IconButton icon="arrowBack" label="Back" onClick={onBack} />}
+				trailing={<ThemeButton />}
+			/>
 			<main className="flex flex-1 px-4 pt-4 pb-6 expanded:justify-center expanded:p-6">
 				<div className="placement-layout">
 					<PlacementStatus className="area-status" />

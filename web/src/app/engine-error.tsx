@@ -3,6 +3,7 @@ import type { FallbackProps } from 'react-error-boundary'
 import { AppBar } from '@/forest/components/app-bar'
 import { Button } from '@/forest/components/button'
 import { Icon } from '@/forest/components/icon'
+import { ThemeButton } from '@/shared/components/theme/theme-button'
 import { GameActionError } from '@/shared/hooks/use-guard'
 
 const copy = {
@@ -19,7 +20,7 @@ const copy = {
 export function EngineError({ cause, onRetry }: { cause: keyof typeof copy; onRetry: () => void }) {
 	return (
 		<div className="flex flex-1 flex-col">
-			<AppBar title="Battleship" />
+			<AppBar title="Battleship" trailing={<ThemeButton />} />
 			<main role="alert" className="flex flex-1 flex-col items-center justify-center gap-4 px-6 text-center">
 				<Icon name="error" className="size-touch text-error" />
 				<h2 className="text-title-large text-on-surface">{copy[cause].title}</h2>

@@ -2,6 +2,7 @@ import { AppBar } from '@/forest/components/app-bar'
 import { Dialog } from '@/forest/components/dialog'
 import { IconButton } from '@/forest/components/icon-button'
 import { Board } from '@/shared/components/board/board'
+import { ThemeButton } from '@/shared/components/theme/theme-button'
 import type { EngineSession } from '@/shared/types/game'
 
 import { useEnemyCells, useHomeCells } from '../hooks/use-board-cells'
@@ -53,6 +54,7 @@ function BattleContent({ player, onLeave, onPlayAgain }: Omit<BattleScreenProps,
 			<AppBar
 				title="Battle"
 				leading={<IconButton icon="arrowBack" label="Back" onClick={turn === 'over' ? onLeave : openLeave} />}
+				trailing={<ThemeButton />}
 			/>
 			<main className="flex flex-1 p-4 medium:p-6">
 				<div className="battle-layout">

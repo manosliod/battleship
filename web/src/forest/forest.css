@@ -135,3 +135,11 @@
 		transform: none;
 	}
 }
+
+.sheet-scrim {
+	opacity: var(--scrim-opacity);
+}
+
+.sheet-popup {
+	padding-bottom: env(safe-area-inset-bottom);
+}

@@ -4,6 +4,7 @@ import { z } from 'zod'
 import { AppBar } from '@/forest/components/app-bar'
 import { Button } from '@/forest/components/button'
 import { TextField } from '@/forest/components/text-field'
+import { ThemeButton } from '@/shared/components/theme/theme-button'
 
 import { FleetCard } from './fleet-card'
 
@@ -37,7 +38,7 @@ export function SetupScreen({ name, onContinue, onIntent }: SetupScreenProps) {
 
 	return (
 		<div className="flex flex-1 flex-col">
-			<AppBar title="Battleship" />
+			<AppBar title="Battleship" trailing={<ThemeButton />} />
 			<main className="flex flex-1 px-4 py-6 expanded:justify-center expanded:px-6 expanded:pt-16">
 				<form action={submit} noValidate className="setup-layout">
 					<h2 className="area-title text-headline-medium text-on-surface">Sink the fleet</h2>
