@@ -129,6 +129,15 @@ final class Session {
                             json.key("home").array(game.home().shots(), (j, cell) -> shot(j, cell, home));
                             json.key("enemy").array(game.enemy().shots(), (j, cell) -> shot(j, cell, enemy));
                             json.key("enemySunk").array(enemy.sunk(), Session::placement);
+                            json.key("revealed")
+                                    .array(
+                                            game.isOver()
+                                                    ? game.enemy().fleet().placements().stream()
+                                                            .filter(p -> !game.enemy()
+                                                                    .isSunk(p.type()))
+                                                            .toList()
+                                                    : List.of(),
+                                            Session::placement);
                             json.key("afloat").begin();
                             json.key("player").array(game.home().afloat(), (j, type) -> j.value(type.name()));
                             json.key("computer").array(game.enemy().afloat(), (j, type) -> j.value(type.name()));
@@ -143,6 +152,7 @@ final class Session {
                             json.key("home").array(List.of(), (j, cell) -> {});
                             json.key("enemy").array(List.of(), (j, cell) -> {});
                             json.key("enemySunk").array(List.of(), (j, cell) -> {});
+                            json.key("revealed").array(List.of(), (j, cell) -> {});
                             json.key("afloat").begin();
                             json.key("player").array(List.of(), (j, type) -> {});
                             json.key("computer").array(List.of(), (j, type) -> {});

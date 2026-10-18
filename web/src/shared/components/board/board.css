@@ -1,0 +1,193 @@
+.board-frame {
+	--cell-max: var(--spacing-cell);
+	--band: calc(var(--spacing-coordinates) + var(--spacing-cell-gap));
+	--mark: var(--spacing-mark);
+	--dot: var(--spacing-miss-dot);
+	container-type: inline-size;
+	width: 100%;
+	max-width: var(--spacing-board);
+}
+
+.board-frame[data-size='small'],
+.board-frame[data-size='adaptive'] {
+	--cell-max: var(--spacing-cell-small);
+	--band: 0px;
+	--mark: var(--spacing-mark-small);
+	--dot: var(--spacing-miss-dot-small);
+	max-width: var(--spacing-board-small);
+}
+
+.board {
+	--cell: min(var(--cell-max), calc((100cqw - var(--band) - 9 * var(--spacing-cell-gap)) / 10));
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacing-cell-gap);
+}
+
+.board-row {
+	display: flex;
+	gap: var(--spacing-cell-gap);
+}
+
+.board-band {
+	display: flex;
+	width: var(--spacing-coordinates);
+	height: var(--cell);
+	align-items: center;
+	justify-content: center;
+}
+
+.board-band-column {
+	width: var(--cell);
+	height: var(--spacing-coordinates);
+}
+
+.board-corner {
+	width: var(--spacing-coordinates);
+	height: var(--spacing-coordinates);
+}
+
+.board-frame[data-size='adaptive'] .board-coordinates,
+.board-frame[data-size='adaptive'] .board-band {
+	display: none;
+}
+
+@variant expanded {
+	.board-frame[data-size='adaptive'] {
+		--cell-max: var(--spacing-cell);
+		--band: calc(var(--spacing-coordinates) + var(--spacing-cell-gap));
+		--mark: var(--spacing-mark);
+		--dot: var(--spacing-miss-dot);
+		max-width: var(--spacing-board);
+	}
+
+	.board-frame[data-size='adaptive'] .board-coordinates,
+	.board-frame[data-size='adaptive'] .board-band {
+		display: flex;
+	}
+}
+
+.board-cell {
+	position: relative;
+	display: flex;
+	width: var(--cell);
+	height: var(--cell);
+	flex-shrink: 0;
+	align-items: center;
+	justify-content: center;
+	border-radius: var(--radius-extra-small);
+	background-color: var(--color-primary-container);
+	color: var(--color-on-primary-container);
+}
+
+.board-cell:focus-visible {
+	outline-offset: calc(-1 * var(--spacing-focus-ring));
+}
+
+.board-cell[data-content='ship'] {
+	background-color: var(--color-secondary);
+}
+
+.board-cell[data-content='miss'] {
+	background-color: var(--color-surface-container-highest);
+}
+
+.board-cell[data-content='hit'] {
+	background-color: var(--color-error-container);
+	color: var(--color-on-error-container);
+}
+
+.board-cell[data-content='sunk'] {
+	background-color: var(--color-error);
+	color: var(--color-on-error);
+}
+
+.board-cell[data-content='aimed'] {
+	box-shadow: inset 0 0 0 var(--spacing-cell-ring) var(--color-primary);
+	color: var(--color-primary);
+}
+
+.board-cell[data-content='preview'] {
+	background-color: var(--color-secondary-container);
+	box-shadow: inset 0 0 0 var(--spacing-cell-ring) var(--color-secondary);
+}
+
+.board-cell[data-content='invalid'] {
+	background-color: var(--color-error-container);
+	box-shadow: inset 0 0 0 var(--spacing-cell-ring) var(--color-error);
+}
+
+.cell-mark {
+	width: min(var(--mark), 80%);
+	height: min(var(--mark), 80%);
+}
+
+.cell-dot {
+	width: min(var(--dot), 50%);
+	height: min(var(--dot), 50%);
+	border-radius: var(--radius-full);
+	background-color: var(--color-outline);
+}
+
+.fleet-segment {
+	width: var(--spacing-fleet-segment);
+	height: var(--spacing-fleet-segment);
+	border-radius: var(--radius-extra-small);
+	background-color: var(--color-secondary);
+}
+
+.fleet-segment[data-content='water'] {
+	background-color: var(--color-primary-container);
+}
+
+.fleet-segment[data-content='hit'] {
+	background-color: var(--color-error-container);
+	box-shadow: inset 0 0 0 var(--spacing-cell-ring) var(--color-error);
+}
+
+.fleet-segment[data-content='sunk'] {
+	background-color: var(--color-error);
+}
+
+.board-cell[data-content='miss'],
+.board-cell[data-content='hit'],
+.board-cell[data-content='sunk'] {
+	transition: background-color var(--motion-duration-short3) var(--ease-standard);
+}
+
+.board-cell[data-content='miss'] .cell-dot,
+.board-cell[data-content='hit'] .cell-mark,
+.board-cell[data-content='sunk'] .cell-mark {
+	transition-property: opacity, scale;
+	transition-duration: var(--motion-duration-short4);
+	transition-timing-function: var(--ease-emphasized-decelerate);
+
+	@starting-style {
+		opacity: 0;
+		scale: 0.9;
+	}
+}
+
+.board-cell[data-content='sunk'] {
+	animation: cell-settle var(--motion-duration-medium1) var(--ease-emphasized-decelerate);
+}
+
+@keyframes cell-settle {
+	from {
+		scale: 0.92;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.board-cell[data-content='miss'],
+	.board-cell[data-content='hit'],
+	.board-cell[data-content='sunk'],
+	.board-cell .cell-dot,
+	.board-cell .cell-mark {
+		transition: none;
+	}
+
+	.board-cell[data-content='sunk'] {
+		animation: none;
+	}
+}

@@ -12,3 +12,7 @@ nbproject/private/
 .DS_Store
 .env
 .serena/
+node_modules/
+dist/
+playwright-report/
+test-results/

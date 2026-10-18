@@ -27,7 +27,7 @@ class SessionTest {
         assertThat(session().snapshot())
                 .isEqualTo("{\"phase\":\"placing\",\"player\":null,\"fleet\":[],"
                         + "\"missing\":[\"CARRIER\",\"BATTLESHIP\",\"CRUISER\",\"SUBMARINE\",\"DESTROYER\"],"
-                        + "\"home\":[],\"enemy\":[],\"enemySunk\":[],\"afloat\":{\"player\":[],\"computer\":[]},"
+                        + "\"home\":[],\"enemy\":[],\"enemySunk\":[],\"revealed\":[],\"afloat\":{\"player\":[],\"computer\":[]},"
                         + "\"winner\":null,\"last\":null}");
     }
 
@@ -113,6 +113,24 @@ class SessionTest {
 
         session.rematch();
         assertThat(session.snapshot()).contains("\"phase\":\"placing\"").contains("\"player\":\"Ada\"");
+    }
+
+    @Test
+    void theComputersAfloatShipsAreRevealedOnlyWhenItWins() {
+        Session session = placedRows();
+        session.start("Ada");
+        session.fire(9, 9);
+        assertThat(session.snapshot()).contains("\"revealed\":[]");
+
+        for (int column = 9; column >= 0; column--) {
+            for (int row = 0; row < 10 && session.snapshot().contains("\"phase\":\"battle\""); row++) {
+                session.fire(row, column);
+            }
+        }
+
+        assertThat(session.snapshot())
+                .contains("\"winner\":\"computer\"")
+                .containsPattern("\"revealed\":\\[\\{\"ship\":");
     }
 
     @Test
