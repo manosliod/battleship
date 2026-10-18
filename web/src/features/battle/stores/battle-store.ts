@@ -71,7 +71,7 @@ export function createBattleStore({ session, replyDelay }: BattleDependencies) {
 				)
 			}
 			if (snapshot.phase === 'over') {
-				set({ home: snapshot.home, turn: 'over', status: overStatus(snapshot), dialog: 'over' })
+				set({ snapshot, home: snapshot.home, turn: 'over', status: overStatus(snapshot), dialog: 'over' })
 				return
 			}
 			set({
@@ -133,7 +133,7 @@ export function createBattleStore({ session, replyDelay }: BattleDependencies) {
 						return
 					}
 					set({
-						snapshot,
+						snapshot: { ...snapshot, revealed: [] },
 						aim: null,
 						turn: 'computer',
 						status: {

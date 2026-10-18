@@ -118,6 +118,7 @@ describe('battle store', () => {
 			inBattle({
 				phase: 'over',
 				winner: 'computer',
+				revealed: [{ ship: 'CARRIER', row: 9, column: 0, across: true }],
 				last: {
 					yours: { row: 2, column: 2, result: 'miss', ship: null },
 					reply: { row: 8, column: 1, result: 'sunk', ship: 'DESTROYER' }
@@ -128,9 +129,11 @@ describe('battle store', () => {
 		store.getState().actions.aim({ row: 2, column: 2 })
 		store.getState().actions.fire()
 		expect(store.getState().turn).toBe('computer')
+		expect(store.getState().snapshot.revealed).toEqual([])
 		vi.advanceTimersByTime(500)
 
 		expect(store.getState()).toMatchObject({ turn: 'over', dialog: 'over', status: { headline: 'Computer wins' } })
+		expect(store.getState().snapshot.revealed).toHaveLength(1)
 	})
 
 	it('stops the pending reply when the battle is left', () => {
