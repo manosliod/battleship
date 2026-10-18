@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/manosliod/battleship/compare/v1.0.0...v1.0.1) (2026-10-18)
+
+
+### 🐛 Bug Fixes
+
+* KAN-22 run the Pages deploy on a manual Release run ([#17](https://github.com/manosliod/battleship/issues/17)) ([27ddc8f](https://github.com/manosliod/battleship/commit/27ddc8f449dbc961cf32d37d2fb6a5b70cf62b7e))
+
 ## [1.0.0](https://github.com/manosliod/battleship/compare/v0.1.0...v1.0.0) (2026-10-18)
 
 
