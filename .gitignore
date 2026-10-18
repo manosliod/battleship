@@ -11,3 +11,4 @@ bin/
 nbproject/private/
 .DS_Store
 .env
+.serena/

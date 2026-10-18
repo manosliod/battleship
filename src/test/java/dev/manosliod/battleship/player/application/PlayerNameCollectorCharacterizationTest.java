@@ -1,4 +1,4 @@
-package battleship;
+package dev.manosliod.battleship.player.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -12,19 +12,18 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.UnaryOperator;
+import java.util.Optional;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-class DisplayCharacterizationTest {
+class PlayerNameCollectorCharacterizationTest {
 
     private static final Path BEFORE = Path.of("docs", "portfolio", "before");
     private static final String CANCEL = "CANCEL";
-    private static final String DIALOG_MESSAGE = "Please insert your name and press 'OK'";
 
-    private static final class ScriptedPrompt implements UnaryOperator<String> {
+    private static final class ScriptedPrompt implements NameInput {
         private final List<String> steps;
         final List<String> messages = new ArrayList<>();
         final List<Thread> threads = new ArrayList<>();
@@ -34,14 +33,14 @@ class DisplayCharacterizationTest {
         }
 
         @Override
-        public String apply(String message) {
+        public Optional<String> read(String message) {
             if (messages.size() >= steps.size()) {
                 throw new AssertionError("prompted again after the last scripted step");
             }
             String step = steps.get(messages.size());
             messages.add(message);
             threads.add(Thread.currentThread());
-            return CANCEL.equals(step) ? null : new String(step);
+            return CANCEL.equals(step) ? Optional.empty() : Optional.of(step);
         }
     }
 
@@ -69,7 +68,7 @@ class DisplayCharacterizationTest {
 
     private static ScriptedPrompt run(String flow) throws IOException {
         ScriptedPrompt prompt = new ScriptedPrompt(steps(flow));
-        new Display(prompt);
+        new PlayerNameCollector(prompt).collect();
         return prompt;
     }
 
@@ -103,7 +102,14 @@ class DisplayCharacterizationTest {
 
         assertThat(prompt.messages)
                 .isNotEmpty()
-                .allSatisfy(m -> assertThat(m).isEqualTo(DIALOG_MESSAGE).isEqualTo(recordedLabel(flow)));
+                .allSatisfy(m ->
+                        assertThat(m).isEqualTo(PlayerNameCollector.MESSAGE).isEqualTo(recordedLabel(flow)));
+    }
+
+    @Test
+    void returnsTheAcceptedName() {
+        assertThat(new PlayerNameCollector(new ScriptedPrompt(List.of(CANCEL, "Ada"))).collect())
+                .isEqualTo("Ada");
     }
 
     @Test
@@ -117,7 +123,7 @@ class DisplayCharacterizationTest {
     }
 
     @Test
-    void constructorBlocksTheCallingThread() throws IOException {
+    void collectBlocksTheCallingThread() throws IOException {
         ScriptedPrompt prompt = run("name-cancel-then-ok");
 
         assertThat(prompt.threads).hasSize(2).containsOnly(Thread.currentThread());
@@ -160,7 +166,7 @@ class DisplayCharacterizationTest {
     void legacyCancelNeverEndsOnItsOwn() {
         ScriptedPrompt prompt = new ScriptedPrompt(List.of(CANCEL, CANCEL));
 
-        assertThatThrownBy(() -> new Display(prompt)).isInstanceOf(AssertionError.class);
+        assertThatThrownBy(() -> new PlayerNameCollector(prompt).collect()).isInstanceOf(AssertionError.class);
         assertThat(prompt.messages).hasSize(2);
     }
 }
