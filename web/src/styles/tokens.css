@@ -1,8 +1,22 @@
-@theme {
+@custom-variant dark {
+	&[data-theme='dark'] {
+		@slot;
+	}
+
+	@media (prefers-color-scheme: dark) {
+		&:not([data-theme='light']) {
+			@slot;
+		}
+	}
+}
+
+@theme static {
 	--breakpoint-*: initial;
 	--breakpoint-medium: 600px;
 	--breakpoint-expanded: 840px;
+}
 
+@theme {
 	--font-sans: 'Roboto', system-ui, sans-serif;
 
 	--text-headline-medium: 28px;
@@ -136,8 +150,8 @@
 	--sys-surface-container-highest: #dde4e1;
 }
 
-@media (prefers-color-scheme: dark) {
-	:root {
+:root {
+	@variant dark {
 		--sys-primary: #82d5c7;
 		--sys-on-primary: #003731;
 		--sys-primary-container: #006b5f;

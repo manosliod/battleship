@@ -7,9 +7,13 @@
 
 @layer base {
 	html {
-		color-scheme: light dark;
+		color-scheme: light;
 		-webkit-text-size-adjust: 100%;
 		text-size-adjust: 100%;
+
+		@variant dark {
+			color-scheme: dark;
+		}
 	}
 
 	html,

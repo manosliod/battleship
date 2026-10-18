@@ -7,8 +7,9 @@ updated.
 
 ## Theme
 
-Kit colour mode **Teal**: a calm sea on a crisp naval plotting table. Light and Dark follow `prefers-color-scheme`
-(`Teal LT` / `Teal DT`). Hits use the Error roles, misses the Outline role.
+Kit colour mode **Teal**: a calm sea on a crisp naval plotting table (`Teal LT` / `Teal DT`). The user picks the theme:
+System (follows `prefers-color-scheme`, the default), Light or Dark (see "Theme choice"). Hits use the Error roles,
+misses the Outline role.
 
 ## Colour roles
 
@@ -114,3 +115,34 @@ Placement on Expanded uses a 360 dp side pane (status, ships, actions, Start bat
 
 Kit: `arrow_back`, `close`, `error`. Added to Forest from Material Symbols Outlined 400 (`@material-symbols/svg-400`
 0.48.0), because the kit lacks them: `shuffle`, `rotate_right`, `restart_alt`, `my_location`.
+
+## Theme choice
+
+The Forest pattern **Theme picker** ([Patterns](https://www.figma.com/design/Qs0Ang2VyFUpVXaoHzgdr6?node-id=76-1156)):
+one M3 single-select segmented button with three segments, each with icon and label. The selected segment shows a check
+mark in place of its icon.
+
+| Segment | Icon | Stored value |
+| --- | --- | --- |
+| System (default) | `brightness_auto` | `system` |
+| Light | `light_mode` | `light` |
+| Dark | `dark_mode` | `dark` |
+
+- **Theme button**: a standard icon button (kit Icon button, Small, Round) labelled "Theme" is the last trailing action
+  of the top app bar on every screen, at every width (on setup and engine screens, which keep their centred title, it
+  sits at the same trailing position). Its icon is the current choice. It is never disabled.
+- **Compact (below 600 dp)**: the button opens the Forest **Theme sheet** (modal bottom sheet with drag handle, title
+  "Theme", the picker) over the 32 % scrim. Scrim tap, swipe down, Escape or Back close it. Frames: "Battle · Theme
+  sheet · Compact · Light/Dark".
+- **Medium and expanded (600 dp and up)**: the button opens the Forest **Theme dialog** (basic dialog, centred, headline
+  "Theme", the picker, one text button "Done") over the 32 % scrim. Done, Escape or scrim tap close it. There is no
+  Cancel/OK pair because the choice applies at once, and M3 allows a single dialog action only as an acknowledgement.
+  Frames: "Battle · Theme dialog · Expanded · Light/Dark"; medium shows the same centred dialog over the medium layout.
+- **Choosing**: the theme changes as soon as a segment is chosen. Choosing does not close the sheet or the dialog, so
+  the new theme is visible behind it and can be changed back.
+- **Keyboard and screen readers**: the picker is a radio group named "Theme" with radios System, Light and Dark. Tab
+  enters the group on the selected radio, arrow keys move, Space or Enter selects. When the sheet or dialog opens, focus
+  goes to the selected radio; Tab moves between the picker and Done; on close, focus returns to the Theme button.
+- **Persistence**: the choice is stored in `localStorage` under `theme`. An inline script in `index.html` sets
+  `data-theme` on `<html>` before first paint, so the page never shows the wrong theme. `<meta name="theme-color">`
+  follows the applied theme (Teal LT or Teal DT Surface).
