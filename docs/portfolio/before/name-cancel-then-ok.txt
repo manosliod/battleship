@@ -1,0 +1,19 @@
+TITLE=Input modal=true
+JRootPane
+ JPanel
+ JLayeredPane
+  JPanel
+   JOptionPane
+    JPanel
+     JPanel
+      JPanel
+      JPanel
+       JLabel 'Please insert your name and press 'OK''
+       MultiplexingTextField
+     JLabel 'null'
+    JPanel
+     JButton 'OK'
+     JButton 'Cancel'
+prompt 1 input=CANCEL
+prompt 2 input=Ada
+after steps: dialog visible=false threadAlive=false
