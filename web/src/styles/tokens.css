@@ -91,6 +91,10 @@
 	--spacing-control: 40px;
 	--spacing-field: 56px;
 	--spacing-dialog: 312px;
+	--spacing-sheet: 640px;
+	--spacing-handle-width: 32px;
+	--spacing-handle-height: 4px;
+	--spacing-handle-area: 36px;
 	--spacing-message: 320px;
 	--spacing-dialog-margin: 24px;
 	--spacing-snackbar: 400px;

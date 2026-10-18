@@ -1,6 +1,7 @@
 import { AlertDialog } from '@base-ui/react/alert-dialog'
 
 import { Button } from './button'
+import { dialogActions, dialogPopup, dialogScrim } from './dialog-surface'
 
 type DialogProps = {
 	open: boolean
@@ -16,15 +17,15 @@ export function Dialog({ open, onOpenChange, title, description, cancel, confirm
 	return (
 		<AlertDialog.Root open={open} onOpenChange={onOpenChange}>
 			<AlertDialog.Portal>
-				<AlertDialog.Backdrop className="dialog-scrim fixed inset-0 z-20 bg-scrim" />
-				<AlertDialog.Popup className="dialog-popup fixed top-1/2 left-1/2 z-30 flex w-dialog -translate-1/2 flex-col gap-4 rounded-extra-large bg-surface-container-high p-6">
+				<AlertDialog.Backdrop className={dialogScrim} />
+				<AlertDialog.Popup className={`${dialogPopup} w-dialog`}>
 					<AlertDialog.Title className="text-headline-small wrap-anywhere text-on-surface">
 						{title}
 					</AlertDialog.Title>
 					<AlertDialog.Description className="text-body-medium text-on-surface-variant">
 						{description}
 					</AlertDialog.Description>
-					<div className="flex justify-end gap-2 pt-2">
+					<div className={dialogActions}>
 						<AlertDialog.Close render={<Button variant="text" />}>{cancel}</AlertDialog.Close>
 						<AlertDialog.Close render={<Button variant="text" onClick={onConfirm} />}>
 							{confirm}
