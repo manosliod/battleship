@@ -2,7 +2,7 @@ import { expect } from '@playwright/test'
 import type { Page } from '@playwright/test'
 
 export async function startGame(page: Page, name = 'Ada') {
-	await page.goto('/')
+	await page.goto('./')
 	await page.getByLabel('Your name').fill(name)
 	await page.getByRole('button', { name: 'Continue' }).click()
 	await expect(page.getByRole('heading', { name: 'Place your Carrier' })).toBeVisible()

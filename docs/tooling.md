@@ -38,6 +38,7 @@ Before the first run, build the engine: `pnpm run engine` calls `./gradlew gener
 | `pnpm test` | Vitest with Testing Library, in jsdom |
 | `pnpm build` | Vite build, then a size check: the entry script must stay under 125 kB gzip and the CSS under 12 kB |
 | `pnpm e2e` | Playwright in Chromium at 412 × 917 (phone) and 1024 × 768 (desktop), with reduced motion on |
+| `E2E_BASE_URL=https://manosliod.github.io/battleship/ pnpm e2e` | The same tests against the live demo, without starting a local server. Keep the slash at the end of the address |
 
 ### TypeScript
 
