@@ -53,6 +53,7 @@ jobs:
 
   deploy-pages:
     needs: build-pages
+    if: ${{ !cancelled() && needs.build-pages.result == 'success' }}
     runs-on: ubuntu-26.04
     concurrency:
       group: pages
