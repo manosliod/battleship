@@ -30,6 +30,7 @@
 	],
 	"links": {
 		"repo": "https://github.com/manosliod/battleship",
+		"demo": "https://manosliod.github.io/battleship/",
 		"figma": "https://www.figma.com/design/Qs0Ang2VyFUpVXaoHzgdr6?node-id=1-10",
 		"caseStudy": "docs/portfolio/case-study.md"
 	},
