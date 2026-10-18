@@ -72,8 +72,10 @@ ESLint's import plugin can do without.
 
 ## CI
 
-`.github/workflows/ci.yml` runs on every pull request and on pushes to `main`. A newer push to the same pull request
-cancels the run before it.
+`.github/workflows/ci.yml` runs on every pull request, and the release workflow runs it once more before it deploys
+(see "Releases"). A push to `main` does not run it on its own: the branch protection only lets a pull request merge
+when it is up to date with `main` and its checks pass, so `main` only ever holds code CI has already passed. A newer
+push to the same pull request cancels the run before it.
 
 | Job | What it runs |
 | --- | --- |
@@ -90,7 +92,9 @@ request open that collects the changes; merging it makes the tag, the GitHub rel
 `build.gradle.kts` is updated through its `x-release-please-version` marker. The first release, `v0.1.0`, is the
 untouched 2022 code (`bootstrap-sha` in `release-please-config.json`).
 
-When a release is made, the same workflow builds the web app and publishes it to GitHub Pages at
+When a release is made, the same workflow first runs the whole of `ci.yml` on the released commit (its checks show as
+`ci / java`, `ci / web` and so on). Only when it passes does it build the web app and publish it to GitHub Pages at
 https://manosliod.github.io/battleship/. It builds the engine first, then the app with `BATTLESHIP_BASE` set to
-`/battleship/` so its files load from that folder. The deploy can also be started by hand from the Actions tab
-("Release" → "Run workflow"); a hand-started run only deploys and never makes a release.
+`/battleship/` so its files load from that folder. If CI fails, nothing is deployed and the live demo stays on the
+previous release. The deploy can also be started by hand from the Actions tab ("Release" → "Run workflow"); a
+hand-started run runs CI and deploys, and never makes a release.
