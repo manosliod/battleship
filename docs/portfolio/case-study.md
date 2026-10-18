@@ -66,7 +66,7 @@ when they are needed.
 
 - **It plays.** A full game against the computer, in the terminal and in the browser.
 - **It is tested.** 324 JUnit test cases (rules, the computer, the terminal game, the engine and the recorded 2022
-  flows), 25 component, store and service tests, and browser tests that play whole games at phone and desktop widths.
+  flows), 30 component, store and service tests, and browser tests that play whole games at phone and desktop widths.
 - **It is checked on every pull request.** CI runs the format check, the Java build with every warning as an error,
   the TeaVM build, ESLint, the type check, the tests, a bundle-size budget and a check that no comment written for
   people slips into the code.

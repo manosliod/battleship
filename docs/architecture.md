@@ -1,6 +1,7 @@
 # Architecture
 
-The program asks for a player name. The game itself lives in `game/` and is described in `docs/rules.md`.
+Battleship against the computer, played in the terminal or in the browser. The rules live in `game/` and are
+described in `docs/rules.md`; the terminal game and the web app are two ways of showing the same game.
 
 ```mermaid
 flowchart LR
