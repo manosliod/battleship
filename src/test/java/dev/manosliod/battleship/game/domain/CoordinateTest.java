@@ -11,8 +11,8 @@ import org.junit.jupiter.params.provider.ValueSource;
 class CoordinateTest {
 
     @ParameterizedTest
-    @CsvSource({"A1,0,0", "a1,0,0", " J10 ,9,9", "B7,1,6", "j1,9,0"})
-    void parsesLetterRowAndNumberColumn(String text, int row, int column) {
+    @CsvSource({"A1,0,0", "a1,0,0", " J10 ,9,9", "B7,6,1", "j1,0,9"})
+    void parsesLetterColumnAndNumberRow(String text, int row, int column) {
         assertThat(Coordinate.parse(text)).contains(new Coordinate(row, column));
     }
 

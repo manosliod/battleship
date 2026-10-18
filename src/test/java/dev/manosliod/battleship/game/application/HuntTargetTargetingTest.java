@@ -46,38 +46,38 @@ class HuntTargetTargetingTest {
 
     @Test
     void firesNextToASingleHit() {
-        Ocean ocean = fire(Ocean.of(Fleets.rows()), "E2");
+        Ocean ocean = fire(Ocean.of(Fleets.rows()), "B5");
 
-        assertThat(choices(ocean)).containsExactlyInAnyOrder(at("D2"), at("F2"), at("E1"), at("E3"));
+        assertThat(choices(ocean)).containsExactlyInAnyOrder(at("B4"), at("B6"), at("A5"), at("C5"));
     }
 
     @Test
     void followsTheLineOfTwoHits() {
-        Ocean ocean = fire(Ocean.of(Fleets.rows()), "C2", "C3");
+        Ocean ocean = fire(Ocean.of(Fleets.rows()), "B3", "C3");
 
-        assertThat(choices(ocean)).containsExactlyInAnyOrder(at("C1"), at("C4"));
+        assertThat(choices(ocean)).containsExactlyInAnyOrder(at("A3"), at("D3"));
     }
 
     @Test
     void turnsBackWhenTheLineMeetsWater() {
-        Ocean ocean = fire(Ocean.of(Fleets.rows()), "A4", "A5", "A6");
+        Ocean ocean = fire(Ocean.of(Fleets.rows()), "D1", "E1", "F1");
 
-        assertThat(choices(ocean)).containsExactly(at("A3"));
+        assertThat(choices(ocean)).containsExactly(at("C1"));
     }
 
     @Test
     void goesBackToHuntingSpacedForTheShortestShipLeftOnceTheShipSinks() {
-        Ocean ocean = fire(Ocean.of(Fleets.rows()), "I1", "I2");
+        Ocean ocean = fire(Ocean.of(Fleets.rows()), "A9", "B9");
 
         assertThat(choices(ocean))
                 .allSatisfy(c -> assertThat((c.row() + c.column()) % 3).isZero())
-                .doesNotContain(at("H1"), at("J1"), at("I3"), at("H2"), at("J2"));
+                .doesNotContain(at("A8"), at("A10"), at("C9"), at("B8"), at("B10"));
     }
 
     @Test
     void spacingGrowsWhenOnlyLongShipsAreLeft() {
         Fleet fleet = Fleets.rows();
-        Ocean ocean = fire(Ocean.of(fleet), "I1", "I2", "G1", "G2", "G3", "E1", "E2", "E3");
+        Ocean ocean = fire(Ocean.of(fleet), "A9", "B9", "A7", "B7", "C7", "A5", "B5", "C5");
 
         assertThat(choices(ocean))
                 .allSatisfy(c -> assertThat((c.row() + c.column()) % 4).isZero());

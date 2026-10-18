@@ -56,12 +56,12 @@ final class BoardView {
     private static List<String> render(Function<Coordinate, Character> symbol) {
         List<String> lines = new ArrayList<>();
         StringBuilder header = new StringBuilder("  ");
-        for (int column = 1; column <= Coordinate.SIZE; column++) {
-            header.append(String.format("%3d", column));
+        for (int column = 0; column < Coordinate.SIZE; column++) {
+            header.append("  ").append((char) ('A' + column));
         }
         lines.add(header.toString());
         for (int row = 0; row < Coordinate.SIZE; row++) {
-            StringBuilder line = new StringBuilder().append((char) ('A' + row)).append(' ');
+            StringBuilder line = new StringBuilder(String.format("%2d", row + 1));
             for (int column = 0; column < Coordinate.SIZE; column++) {
                 line.append("  ").append(symbol.apply(new Coordinate(row, column)));
             }

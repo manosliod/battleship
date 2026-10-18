@@ -27,12 +27,12 @@ public record Coordinate(int row, int column) {
         if (trimmed.length() < 2 || trimmed.length() > 3) {
             return Optional.empty();
         }
-        int row = trimmed.charAt(0) - 'A';
+        int column = trimmed.charAt(0) - 'A';
         String digits = trimmed.substring(1);
         if (!digits.chars().allMatch(Character::isDigit)) {
             return Optional.empty();
         }
-        return of(row, Integer.parseInt(digits) - 1);
+        return of(Integer.parseInt(digits) - 1, column);
     }
 
     public static List<Coordinate> all() {
@@ -46,7 +46,7 @@ public record Coordinate(int row, int column) {
     }
 
     public String label() {
-        return (char) ('A' + row) + Integer.toString(column + 1);
+        return (char) ('A' + column) + Integer.toString(row + 1);
     }
 
     public List<Coordinate> neighbours() {

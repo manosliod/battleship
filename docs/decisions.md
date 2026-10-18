@@ -34,3 +34,10 @@ build/install/battleship/bin/battleship
 
 Ships go in with a start cell and a direction, for example `A1 across` or `B2 down`. `random` places the ships that
 are left, and `reset` starts the placement again.
+
+## Letters name the columns, numbers the rows
+
+The terminal game first wrote the row as a letter (`B7` was row B, column 7, as on the boxed board game). The web
+app and its Figma design put the letters across the top, so the same cell had two different names. Both now use
+letters for columns and numbers for rows, so `B7` is column B, row 7 everywhere. The tests that name cells were
+rewritten to name the same cells as before in the new way.

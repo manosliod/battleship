@@ -12,20 +12,20 @@ class FleetTest {
     @Test
     void placementCoversItsLengthInItsDirection() {
         assertThat(new Placement(ShipType.CRUISER, at("B2"), Orientation.VERTICAL).cells())
-                .containsExactly(at("B2"), at("C2"), at("D2"));
-        assertThat(new Placement(ShipType.DESTROYER, at("B9"), Orientation.HORIZONTAL).cells())
-                .containsExactly(at("B9"), at("B10"));
+                .containsExactly(at("B2"), at("B3"), at("B4"));
+        assertThat(new Placement(ShipType.DESTROYER, at("I2"), Orientation.HORIZONTAL).cells())
+                .containsExactly(at("I2"), at("J2"));
     }
 
     @Test
     void placementMayNotLeaveTheBoard() {
-        assertThat(Placement.of(ShipType.CARRIER, at("A7"), Orientation.HORIZONTAL))
+        assertThat(Placement.of(ShipType.CARRIER, at("G1"), Orientation.HORIZONTAL))
                 .isEmpty();
-        assertThat(Placement.of(ShipType.CARRIER, at("A6"), Orientation.HORIZONTAL))
+        assertThat(Placement.of(ShipType.CARRIER, at("F1"), Orientation.HORIZONTAL))
                 .isPresent();
-        assertThat(Placement.of(ShipType.CARRIER, at("G1"), Orientation.VERTICAL))
+        assertThat(Placement.of(ShipType.CARRIER, at("A7"), Orientation.VERTICAL))
                 .isEmpty();
-        assertThatThrownBy(() -> new Placement(ShipType.DESTROYER, at("J1"), Orientation.VERTICAL))
+        assertThatThrownBy(() -> new Placement(ShipType.DESTROYER, at("A10"), Orientation.VERTICAL))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -33,13 +33,13 @@ class FleetTest {
     void checkNamesTheProblem() {
         Fleet fleet = Fleet.empty().with(new Placement(ShipType.CARRIER, at("A1"), Orientation.HORIZONTAL));
 
-        assertThat(fleet.check(ShipType.BATTLESHIP, at("A5"), Orientation.VERTICAL))
+        assertThat(fleet.check(ShipType.BATTLESHIP, at("E1"), Orientation.VERTICAL))
                 .contains(PlacementProblem.OVERLAP);
-        assertThat(fleet.check(ShipType.CARRIER, at("C1"), Orientation.HORIZONTAL))
+        assertThat(fleet.check(ShipType.CARRIER, at("A3"), Orientation.HORIZONTAL))
                 .contains(PlacementProblem.ALREADY_PLACED);
-        assertThat(fleet.check(ShipType.BATTLESHIP, at("A8"), Orientation.HORIZONTAL))
+        assertThat(fleet.check(ShipType.BATTLESHIP, at("H1"), Orientation.HORIZONTAL))
                 .contains(PlacementProblem.OFF_BOARD);
-        assertThat(fleet.check(ShipType.BATTLESHIP, at("B1"), Orientation.HORIZONTAL))
+        assertThat(fleet.check(ShipType.BATTLESHIP, at("A2"), Orientation.HORIZONTAL))
                 .isEmpty();
     }
 
@@ -47,7 +47,7 @@ class FleetTest {
     void shipsMayTouch() {
         Fleet fleet = Fleet.empty().with(new Placement(ShipType.CARRIER, at("A1"), Orientation.HORIZONTAL));
 
-        assertThat(fleet.check(ShipType.DESTROYER, at("A6"), Orientation.HORIZONTAL))
+        assertThat(fleet.check(ShipType.DESTROYER, at("F1"), Orientation.HORIZONTAL))
                 .isEmpty();
     }
 
@@ -56,7 +56,7 @@ class FleetTest {
         Placement carrier = new Placement(ShipType.CARRIER, at("A1"), Orientation.HORIZONTAL);
         assertThatThrownBy(() -> new Fleet(List.of(carrier, carrier))).isInstanceOf(IllegalArgumentException.class);
         assertThatThrownBy(() ->
-                        new Fleet(List.of(carrier, new Placement(ShipType.DESTROYER, at("A2"), Orientation.VERTICAL))))
+                        new Fleet(List.of(carrier, new Placement(ShipType.DESTROYER, at("B1"), Orientation.VERTICAL))))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -67,8 +67,8 @@ class FleetTest {
         assertThat(full.complete()).isTrue();
         assertThat(full.without(ShipType.SUBMARINE).missing()).containsExactly(ShipType.SUBMARINE);
         assertThat(Fleet.empty().missing()).containsExactly(ShipType.values());
-        assertThat(full.at(at("C4")).map(Placement::type)).contains(ShipType.BATTLESHIP);
-        assertThat(full.at(at("B1"))).isEmpty();
+        assertThat(full.at(at("D3")).map(Placement::type)).contains(ShipType.BATTLESHIP);
+        assertThat(full.at(at("A2"))).isEmpty();
     }
 
     @Test

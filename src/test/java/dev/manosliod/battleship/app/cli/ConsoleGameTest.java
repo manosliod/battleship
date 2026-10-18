@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 
 class ConsoleGameTest {
 
-    private static final List<String> ROWS = List.of("A1 across", "C1 across", "E1 across", "G1 across", "I1 across");
+    private static final List<String> ROWS = List.of("A1 across", "A3 across", "A5 across", "A7 across", "A9 across");
 
     private static ScriptedConsole run(List<String> input) {
         ScriptedConsole console = new ScriptedConsole(input);
@@ -46,7 +46,7 @@ class ConsoleGameTest {
 
     @Test
     void placementExplainsEveryMistake() {
-        ScriptedConsole console = run(List.of("Ada", "A7 across", "A1 sideways", "Z9 down", "A1 across", "A3 down"));
+        ScriptedConsole console = run(List.of("Ada", "G1 across", "A1 sideways", "Z9 down", "A1 across", "C1 down"));
 
         assertThat(console.output())
                 .contains("The Carrier does not fit there: it would leave the board.")
@@ -60,8 +60,9 @@ class ConsoleGameTest {
         ScriptedConsole console = run(script(List.of("Ada"), ROWS));
 
         assertThat(console.output())
-                .contains("A   S  S  S  S  S  .  .  .  .  .")
-                .contains("I   S  S  .  .  .  .  .  .  .  .")
+                .contains("    A  B  C  D  E  F  G  H  I  J")
+                .contains(" 1  S  S  S  S  S  .  .  .  .  .")
+                .contains(" 9  S  S  .  .  .  .  .  .  .  .")
                 .endsWith("Type 'start' to begin the battle, or 'reset' to place your ships again: ");
     }
 
@@ -75,20 +76,20 @@ class ConsoleGameTest {
 
     @Test
     void resetStartsThePlacementAgain() {
-        ScriptedConsole console = run(List.of("Ada", "A1 across", "reset", "B1 down"));
+        ScriptedConsole console = run(List.of("Ada", "A1 across", "reset", "A2 down"));
 
         assertThat(console.output().split("Carrier \\(5 cells\\): ", -1)).hasSize(3);
     }
 
     @Test
     void battleRefusesBadAndRepeatedCells() {
-        ScriptedConsole console = run(script(script(List.of("Ada"), ROWS), List.of("start", "K1", "B5", "b5")));
+        ScriptedConsole console = run(script(script(List.of("Ada"), ROWS), List.of("start", "K1", "E2", "e2")));
 
         assertThat(console.output())
                 .contains("That is not a cell. Use a letter from A to J and a number from 1 to 10, for example B7.")
-                .contains("You fire at B5: ")
+                .contains("You fire at E2: ")
                 .contains("The computer fires at ")
-                .contains("You already fired at B5. Pick another cell.")
+                .contains("You already fired at E2. Pick another cell.")
                 .contains("Your fleet")
                 .contains("Enemy waters")
                 .contains(ConsoleGame.LEGEND);
