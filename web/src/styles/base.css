@@ -38,6 +38,7 @@
 	}
 
 	button,
+	[role='radio'],
 	[role='gridcell'] {
 		touch-action: manipulation;
 		user-select: none;
