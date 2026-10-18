@@ -4,7 +4,7 @@ import { ErrorBoundary } from 'react-error-boundary'
 import { engineService } from '@/shared/services/engine-service'
 import { loadOnce } from '@/shared/services/load-once'
 
-import { EngineError } from './engine-error'
+import { GameError } from './engine-error'
 import { EngineLoading } from './engine-loading'
 import type { GameScreenProps } from './game-screen'
 
@@ -23,10 +23,7 @@ export const preloadGame = () => {
 
 export function Game(props: GameScreenProps) {
 	return (
-		<ErrorBoundary
-			onReset={retryAll}
-			fallbackRender={({ resetErrorBoundary }) => <EngineError onRetry={resetErrorBoundary} />}
-		>
+		<ErrorBoundary onReset={retryAll} FallbackComponent={GameError}>
 			<Suspense fallback={<EngineLoading />}>
 				<LazyGame {...props} />
 			</Suspense>

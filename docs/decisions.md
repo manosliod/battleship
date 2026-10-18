@@ -56,3 +56,11 @@ Java code as the terminal game and the tests.
   `String.format` made the engine about 74 KB gzipped; without it the engine is about 20 KB.
 - TeaVM adds an annotation processor to the main code that only supports Java 11 sources. With `-Werror` its warning
   fails the build, and nothing in the main code needs it, so it is removed from `annotationProcessor`.
+
+## Engine sessions are not closed when a screen goes away
+
+A game's engine session is closed when you leave the game. If the game goes away another way (Try again after an
+error, or a page that embeds the game removes it), the session is released when the browser frees the game's
+objects (a `FinalizationRegistry` in `engine-service.ts`). Closing it from a clean-up on unmount would close it in
+development too, where React mounts every component twice on purpose, and the second mount would then play on a
+closed session.
