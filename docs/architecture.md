@@ -29,3 +29,5 @@ The old behaviour is pinned by the files in `docs/portfolio/before/`, which the 
   - `Game` is both oceans and whose turn it is. Every move returns a new `Game`; nothing is changed in place.
   - `FleetPlacer` places ships at random, using a `Dice` it is given, so tests can make it repeatable.
 - `game/application/Battle` runs a game: your shot, then the computer's reply, chosen by a `Targeting`.
+- `game/application/HuntTargetTargeting` is how the computer chooses (see "How the computer plays" in `docs/rules.md`).
+  `RandomTargeting` fires anywhere it has not fired yet; tests use it as the simplest opponent.
