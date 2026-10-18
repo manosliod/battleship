@@ -37,3 +37,15 @@ The old behaviour is pinned by the files in `docs/portfolio/before/`, which the 
 - `game/application/Battle` runs a game: your shot, then the computer's reply, chosen by a `Targeting`.
 - `game/application/HuntTargetTargeting` is how the computer chooses (see "How the computer plays" in `docs/rules.md`).
   `RandomTargeting` fires anywhere it has not fired yet; tests use it as the simplest opponent.
+
+## The browser engine
+
+The web version does not copy the rules into TypeScript. TeaVM turns the same Java code into a JavaScript module,
+`build/generated/teavm/js/battleship-engine.js`, with `./gradlew generateJavaScript`.
+
+- `src/teavm/java/.../engine/Engine` is the list of functions the browser can call: open a session, place, remove,
+  place the rest at random, clear, start, fire, rematch, read a snapshot, close.
+- `Session` holds one game: the fleet being placed, then the battle. `Sessions` keeps the open ones by number.
+- Every call answers with a short problem name (`OVERLAP`, `ALREADY_FIRED`, …) or an empty text when it worked.
+  `snapshot` answers with the whole game as JSON, written by `Json`, so the browser never has to keep its own copy
+  of the rules or of the game.

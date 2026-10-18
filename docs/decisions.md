@@ -41,3 +41,18 @@ The terminal game first wrote the row as a letter (`B7` was row B, column 7, as 
 app and its Figma design put the letters across the top, so the same cell had two different names. Both now use
 letters for columns and numbers for rows, so `B7` is column B, row 7 everywhere. The tests that name cells were
 rewritten to name the same cells as before in the new way.
+
+## The browser engine is the Java code, compiled with TeaVM
+
+The plan allowed a TypeScript copy of the rules if TeaVM caused trouble. It did not, so the browser runs the same
+Java code as the terminal game and the tests.
+
+- The engine talks in plain numbers and texts, and returns the game as JSON, because those cross from Java to
+  JavaScript without any conversion code.
+- `Engine` keeps its sessions in a static field. The Java standard forbids static state, but a module that the
+  browser imports needs one place to keep its games, and TeaVM exports only static methods. All the logic sits in
+  `Session` and `Sessions`, which have no static state and are tested directly.
+- JSON is written by a small `Json` class instead of a library, and without `String.format`: pulling in
+  `String.format` made the engine about 74 KB gzipped; without it the engine is about 20 KB.
+- TeaVM adds an annotation processor to the main code that only supports Java 11 sources. With `-Werror` its warning
+  fails the build, and nothing in the main code needs it, so it is removed from `annotationProcessor`.

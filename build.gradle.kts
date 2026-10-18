@@ -1,6 +1,7 @@
 plugins {
     application
     alias(libs.plugins.spotless)
+    alias(libs.plugins.teavm)
 }
 
 group = "dev.manosliod"
@@ -23,8 +24,21 @@ dependencies {
     testRuntimeOnly(libs.junit.platform.launcher)
 }
 
+teavm {
+    js {
+        mainClass = "dev.manosliod.battleship.engine.Engine"
+        moduleType = org.teavm.gradle.api.JSModuleType.ES2015
+        targetFileName = "battleship-engine.js"
+        obfuscated = true
+    }
+}
+
 application {
     mainClass = "dev.manosliod.battleship.app.Main"
+}
+
+configurations.annotationProcessor {
+    exclude(group = "org.teavm", module = "teavm-extension-annotation-processor")
 }
 
 tasks.withType<JavaCompile>().configureEach {
