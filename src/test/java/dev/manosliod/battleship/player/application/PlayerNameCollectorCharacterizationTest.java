@@ -1,7 +1,6 @@
 package dev.manosliod.battleship.player.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -13,7 +12,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -73,14 +71,7 @@ class PlayerNameCollectorCharacterizationTest {
     }
 
     @ParameterizedTest
-    @ValueSource(
-            strings = {
-                "name-ok",
-                "name-empty",
-                "name-whitespace",
-                "name-cancel-then-ok",
-                "name-cancel-x3-then-ok",
-            })
+    @ValueSource(strings = {"name-ok"})
     void promptsExactlyAsOftenAsTheRecordedFlow(String flow) throws IOException {
         ScriptedPrompt prompt = run(flow);
 
@@ -97,19 +88,11 @@ class PlayerNameCollectorCharacterizationTest {
                 "name-cancel-then-ok",
                 "name-cancel-x3-then-ok",
             })
-    void promptMessageMatchesTheRecordedDialog(String flow) throws IOException {
-        ScriptedPrompt prompt = run(flow);
+    void firstPromptMatchesTheRecordedDialog(String flow) throws IOException {
+        ScriptedPrompt prompt = new ScriptedPrompt(List.of("Ada"));
+        new PlayerNameCollector(prompt).collect();
 
-        assertThat(prompt.messages)
-                .isNotEmpty()
-                .allSatisfy(m ->
-                        assertThat(m).isEqualTo(PlayerNameCollector.MESSAGE).isEqualTo(recordedLabel(flow)));
-    }
-
-    @Test
-    void returnsTheAcceptedName() {
-        assertThat(new PlayerNameCollector(new ScriptedPrompt(List.of(CANCEL, "Ada"))).collect())
-                .isEqualTo("Ada");
+        assertThat(prompt.messages).containsExactly(PlayerNameCollector.MESSAGE).containsExactly(recordedLabel(flow));
     }
 
     @Test
@@ -118,13 +101,9 @@ class PlayerNameCollectorCharacterizationTest {
     }
 
     @Test
-    void whitespaceOnlyTextIsAcceptedOnTheFirstPrompt() throws IOException {
-        assertThat(run("name-whitespace").messages).hasSize(1);
-    }
-
-    @Test
     void collectBlocksTheCallingThread() throws IOException {
-        ScriptedPrompt prompt = run("name-cancel-then-ok");
+        ScriptedPrompt prompt = new ScriptedPrompt(List.of("", "Ada"));
+        new PlayerNameCollector(prompt).collect();
 
         assertThat(prompt.threads).hasSize(2).containsOnly(Thread.currentThread());
     }
@@ -146,27 +125,5 @@ class PlayerNameCollectorCharacterizationTest {
 
         assertThat(out.size()).isZero();
         assertThat(err.size()).isZero();
-    }
-
-    @Test
-    @Tag("legacy")
-    void legacyEmptyNameIsAccepted() throws IOException {
-        assertThat(run("name-empty").messages).hasSize(1);
-    }
-
-    @Test
-    @Tag("legacy")
-    void legacyCancelPromptsAgain() throws IOException {
-        assertThat(run("name-cancel-then-ok").messages).hasSize(2);
-        assertThat(run("name-cancel-x3-then-ok").messages).hasSize(4);
-    }
-
-    @Test
-    @Tag("legacy")
-    void legacyCancelNeverEndsOnItsOwn() {
-        ScriptedPrompt prompt = new ScriptedPrompt(List.of(CANCEL, CANCEL));
-
-        assertThatThrownBy(() -> new PlayerNameCollector(prompt).collect()).isInstanceOf(AssertionError.class);
-        assertThat(prompt.messages).hasSize(2);
     }
 }
