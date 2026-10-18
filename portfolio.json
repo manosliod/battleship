@@ -1,0 +1,67 @@
+{
+	"slug": "battleship",
+	"name": "Battleship",
+	"tagline": "Classic Battleship against a smart computer, from one tested Java engine",
+	"summary": "A 2022 Java Swing stub that only asked for a name is rebuilt as a full game of Battleship against the computer. One tested Java 25 engine plays it in the terminal and, compiled to JavaScript with TeaVM, behind a mobile-first React app designed in Figma on Material 3.",
+	"year": { "original": 2022, "refreshed": 2026 },
+	"kind": "game",
+	"stack": [
+		"Java 25",
+		"Gradle",
+		"JUnit 6",
+		"AssertJ",
+		"TeaVM",
+		"React 19",
+		"TypeScript",
+		"Zustand",
+		"Base UI",
+		"Tailwind CSS 4",
+		"Vitest",
+		"Playwright",
+		"Figma",
+		"Material 3"
+	],
+	"highlights": [
+		"One Java engine, with immutable game state, plays the same game in the terminal and in the browser",
+		"A computer opponent that hunts on a spaced pattern and follows a line after a hit, in under 70 shots on average",
+		"The old program's behaviour was pinned by tests first, then its bugs were fixed one commit at a time",
+		"Every screen designed in Figma first, at phone, tablet and desktop widths, in light and dark",
+		"Aim-then-fire on touch, full keyboard play and screen-reader announcements for every shot"
+	],
+	"links": {
+		"repo": "https://github.com/manosliod/battleship",
+		"figma": "https://www.figma.com/design/Qs0Ang2VyFUpVXaoHzgdr6?node-id=1-10",
+		"caseStudy": "docs/portfolio/case-study.md"
+	},
+	"cover": "docs/portfolio/cover.png",
+	"screens": [
+		"docs/portfolio/screens/compact-light-1-name.png",
+		"docs/portfolio/screens/compact-light-2-placement.png",
+		"docs/portfolio/screens/compact-light-3-fleet-ready.png",
+		"docs/portfolio/screens/compact-light-4-battle.png",
+		"docs/portfolio/screens/compact-light-5-game-over.png",
+		"docs/portfolio/screens/compact-dark-1-name.png",
+		"docs/portfolio/screens/compact-dark-2-placement.png",
+		"docs/portfolio/screens/compact-dark-3-fleet-ready.png",
+		"docs/portfolio/screens/compact-dark-4-battle.png",
+		"docs/portfolio/screens/compact-dark-5-game-over.png",
+		"docs/portfolio/screens/expanded-light-1-name.png",
+		"docs/portfolio/screens/expanded-light-2-placement.png",
+		"docs/portfolio/screens/expanded-light-3-fleet-ready.png",
+		"docs/portfolio/screens/expanded-light-4-battle.png",
+		"docs/portfolio/screens/expanded-light-5-game-over.png",
+		"docs/portfolio/screens/expanded-dark-1-name.png",
+		"docs/portfolio/screens/expanded-dark-2-placement.png",
+		"docs/portfolio/screens/expanded-dark-3-fleet-ready.png",
+		"docs/portfolio/screens/expanded-dark-4-battle.png",
+		"docs/portfolio/screens/expanded-dark-5-game-over.png"
+	],
+	"accent": "#006B60",
+	"status": "ready",
+	"author": {
+		"name": "Manos Liodakis",
+		"github": "https://github.com/manosliod",
+		"linkedin": "https://www.linkedin.com/in/emmanouil-liodakis/"
+	},
+	"license": "MIT"
+}
