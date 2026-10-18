@@ -137,9 +137,15 @@
 }
 
 .sheet-scrim {
-	opacity: var(--scrim-opacity);
+	opacity: calc(var(--scrim-opacity) * (1 - var(--drawer-swipe-progress, 0)));
 }
 
 .sheet-popup {
 	padding-bottom: env(safe-area-inset-bottom);
+	transform: translateY(var(--drawer-swipe-movement-y, 0));
+	touch-action: none;
+}
+
+.sheet-popup[data-swiping] {
+	user-select: none;
 }
