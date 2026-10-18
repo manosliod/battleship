@@ -35,5 +35,5 @@ export function move(cell: Cell, key: string): Cell | null {
 		End: { row: cell.row, column: boardSize - 1 }
 	}
 	const next = steps[key]
-	return next && isOnBoard(next) ? next : null
+	return next && isOnBoard(next) && !sameCell(next, cell) ? next : null
 }
