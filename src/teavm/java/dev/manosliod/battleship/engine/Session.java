@@ -6,7 +6,6 @@ import dev.manosliod.battleship.game.domain.Coordinate;
 import dev.manosliod.battleship.game.domain.Dice;
 import dev.manosliod.battleship.game.domain.Fleet;
 import dev.manosliod.battleship.game.domain.FleetPlacer;
-import dev.manosliod.battleship.game.domain.Ocean;
 import dev.manosliod.battleship.game.domain.Orientation;
 import dev.manosliod.battleship.game.domain.Outcome;
 import dev.manosliod.battleship.game.domain.Placement;
@@ -125,9 +124,11 @@ final class Session {
         battle.map(Battle::game)
                 .ifPresentOrElse(
                         game -> {
-                            json.key("home").array(game.home().shots(), (j, cell) -> shot(j, cell, game.home()));
-                            json.key("enemy").array(game.enemy().shots(), (j, cell) -> shot(j, cell, game.enemy()));
-                            json.key("enemySunk").array(game.enemy().sightings().sunk(), Session::placement);
+                            Sightings home = game.home().sightings();
+                            Sightings enemy = game.enemy().sightings();
+                            json.key("home").array(game.home().shots(), (j, cell) -> shot(j, cell, home));
+                            json.key("enemy").array(game.enemy().shots(), (j, cell) -> shot(j, cell, enemy));
+                            json.key("enemySunk").array(enemy.sunk(), Session::placement);
                             json.key("afloat").begin();
                             json.key("player").array(game.home().afloat(), (j, type) -> j.value(type.name()));
                             json.key("computer").array(game.enemy().afloat(), (j, type) -> j.value(type.name()));
@@ -175,12 +176,15 @@ final class Session {
                 .end();
     }
 
-    private static void shot(Json json, Coordinate cell, Ocean ocean) {
-        Sightings sightings = ocean.sightings();
+    private static void shot(Json json, Coordinate cell, Sightings sightings) {
         json.begin()
                 .field("row", cell.row())
                 .field("column", cell.column())
-                .field("result", result(sightings.outcomeAt(cell).orElseThrow()))
+                .field(
+                        "result",
+                        sightings.partOfSunkShip(cell)
+                                ? "sunk"
+                                : result(sightings.outcomeAt(cell).orElseThrow()))
                 .end();
     }
 

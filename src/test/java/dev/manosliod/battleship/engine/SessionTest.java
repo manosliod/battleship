@@ -107,6 +107,8 @@ class SessionTest {
         assertThat(session.snapshot())
                 .contains("\"phase\":\"over\"")
                 .containsPattern("\"winner\":\"(player|computer)\"");
+        assertThat(session.snapshot().split("\"result\":\"sunk\"", -1).length - 1)
+                .isGreaterThanOrEqualTo(17);
         assertThat(session.fire(0, 0)).isEqualTo("GAME_OVER");
 
         session.rematch();
