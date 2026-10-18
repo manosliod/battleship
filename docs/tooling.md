@@ -88,3 +88,8 @@ cancels the run before it.
 request open that collects the changes; merging it makes the tag, the GitHub release and the changelog. The version in
 `build.gradle.kts` is updated through its `x-release-please-version` marker. The first release, `v0.1.0`, is the
 untouched 2022 code (`bootstrap-sha` in `release-please-config.json`).
+
+When a release is made, the same workflow builds the web app and publishes it to GitHub Pages at
+https://manosliod.github.io/battleship/. It builds the engine first, then the app with `BATTLESHIP_BASE` set to
+`/battleship/` so its files load from that folder. The deploy can also be started by hand from the Actions tab
+("Release" → "Run workflow"); a hand-started run only deploys and never makes a release.

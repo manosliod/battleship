@@ -8,7 +8,7 @@ Battleship on a 10 × 10 board, one player against the computer. You place five 
 take turns firing until one fleet is sunk. The rules live in one tested Java engine: it runs the terminal game, and
 the browser plays the same engine compiled to JavaScript with TeaVM, behind a mobile-first React app.
 
-[Design (Figma)](https://www.figma.com/design/Qs0Ang2VyFUpVXaoHzgdr6?node-id=1-10) · [Case study](docs/portfolio/case-study.md)
+**[Live demo](https://manosliod.github.io/battleship/)** · [Design (Figma)](https://www.figma.com/design/Qs0Ang2VyFUpVXaoHzgdr6?node-id=1-10) · [Case study](docs/portfolio/case-study.md)
 
 ## Features
 
