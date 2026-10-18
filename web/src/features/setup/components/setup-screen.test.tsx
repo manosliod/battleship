@@ -16,6 +16,17 @@ describe('SetupScreen', () => {
 		expect(onContinue).not.toHaveBeenCalled()
 	})
 
+	it('refuses a name the engine would strip to nothing', async () => {
+		const onContinue = vi.fn()
+		render(<SetupScreen name="" onContinue={onContinue} onIntent={vi.fn()} />)
+
+		fireEvent.change(screen.getByLabelText('Your name'), { target: { value: '\u001F\u001C' } })
+		fireEvent.click(screen.getByRole('button', { name: 'Continue' }))
+
+		expect(await screen.findByText(nameError)).toBeInTheDocument()
+		expect(onContinue).not.toHaveBeenCalled()
+	})
+
 	it('goes on with the trimmed name', async () => {
 		const onContinue = vi.fn()
 		render(<SetupScreen name="" onContinue={onContinue} onIntent={vi.fn()} />)

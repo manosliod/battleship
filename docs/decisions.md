@@ -64,3 +64,9 @@ error, or a page that embeds the game removes it), the session is released when 
 objects (a `FinalizationRegistry` in `engine-service.ts`). Closing it from a clean-up on unmount would close it in
 development too, where React mounts every component twice on purpose, and the second mount would then play on a
 closed session.
+
+## The web name check follows the Java one
+
+The engine removes spaces around a name with Java's `strip()`, which also removes four rarely typed control
+characters (U+001C to U+001F) that JavaScript's `trim()` keeps. The name screen refuses a name made only of those
+characters too, so a name it accepts is never refused later by the engine.

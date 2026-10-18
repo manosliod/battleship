@@ -9,7 +9,12 @@ import { FleetCard } from './fleet-card'
 
 export const nameError = 'Enter a name to continue.'
 
-const nameSchema = z.string().trim().min(1)
+const strippedByJava = (character: string) => /\s/u.test(character) || (character >= '\u001C' && character <= '\u001F')
+
+const nameSchema = z
+	.string()
+	.trim()
+	.refine((name) => !Array.from(name).every(strippedByJava))
 
 type SetupScreenProps = { name: string; onContinue: (name: string) => void; onIntent: () => void }
 
