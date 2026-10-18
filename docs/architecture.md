@@ -71,6 +71,22 @@ The web app lives in `web/`. It is a React app built with Vite, and it can also 
 - When the battle screen goes away, for any reason, it stops the computer's pending reply and hides the snackbar.
 - `shared/hooks/use-reduced-motion.ts` follows the system "reduce motion" setting. When it is on, the computer's reply
   shows at once instead of after a short pause.
+- `shared/components/theme/` is the Theme button, shown at the trailing end of every app bar, and the Theme panel it
+  opens: a bottom sheet on a phone, a dialog on wider windows. `shared/stores/theme-store.ts` holds the choice (System,
+  the default, Light or Dark) for the whole app, and `shared/services/theme-service.ts` is the only code that touches
+  `localStorage` (key `theme`) and the page's `data-theme`, `color-scheme` and `theme-color` tags.
+- **The theme is set before the app starts.** A short script in `index.html` reads the saved choice and marks the page
+  (`data-theme`) before anything is drawn, so a returning player never sees the wrong colours flash. Choosing in the
+  Theme panel saves the choice and marks the page again at once. On System the browser follows the device setting,
+  live, through CSS; no code watches it. A choice made in another tab arrives through the browser's `storage` event;
+  the store listens for it only while some part of the page shows the theme, and stops when nothing does.
+- **The Theme panel downloads on its own**, as soon as the pointer or keyboard focus reaches the Theme button. If it is
+  still downloading when the button is pressed, the button reports itself busy and a loading indicator fades in after
+  a quarter of a second. If the download fails, a snackbar says "Couldn’t open Theme. Try again." and the next press
+  tries again.
+- **Sheet or dialog is decided when Theme is pressed** (`shared/utils/window-class.ts`, the 600 dp medium breakpoint
+  kept in `styles/breakpoints.ts` and checked against `tokens.css` by a test). It stays the same until the panel
+  closes, even if the window is resized, and closing always returns focus to the Theme button.
 
 The engine answers your shot and the computer's reply in one call. The battle screen shows your shot at once and the
 reply a moment later, so you can follow both.

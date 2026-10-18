@@ -65,3 +65,50 @@ and "J". The name has no length limit in the engine or the form.
 | Marks could be larger than a shrunken cell | Marks and miss dots are capped to the cell size |
 
 Held up: one-letter names, emoji and accented names, every screen at 412 and wider.
+
+## Theme choice (KAN-28)
+
+Date: 2026-10-18. Build: `web/` on `feat/theme-choice`. Checked with Playwright (Chromium) at the Figma frame widths:
+412 × 917 (Theme sheet, light and dark), 600 × 960 (medium battle with the dialog), 1024 × 768 (Theme dialog, light and
+dark; setup with the Theme button), and at 320 and 360 for the worst case. Each screenshot was compared with the
+`get_screenshot` render of the matching frame (sheet 83-10505 / 83-10562, dialog 92-11401 / 92-11499, setup 56-2 /
+56-77, medium 58-7112).
+
+| Behaviour | Checked by |
+| --- | --- |
+| Theme button in every app bar, icon = current choice | `theme-button.test.tsx`, screenshots |
+| Compact opens the sheet, medium and expanded the dialog with Done | `theme-button.test.tsx`, `e2e/theme.spec.ts` |
+| A choice applies at once and the panel stays open | unit and e2e |
+| Escape, scrim tap, Done and a swipe down close it; focus returns to Theme | e2e |
+| Sheet or dialog stays the same while open when the window is resized | unit and e2e |
+| Radio group named "Theme"; arrow keys move the choice | e2e |
+| Stored under `theme`; applied before the app script runs; `color-scheme` and `theme-color` follow | `pre-paint.test.ts`, `theme-service.test.ts`, e2e |
+| A storage that throws or refuses writes falls back to System | unit and e2e |
+| System follows a live change of the device theme | e2e |
+| A choice in another tab reaches this one | e2e |
+| A failed panel download shows a snackbar and the next press opens it | unit and e2e |
+
+### Accepted differences
+
+| Where | Difference | Why it is accepted |
+| --- | --- | --- |
+| Sheet and dialog | Text and segments sit 1–3 px off the frame (picker 306 px wide in code, 309 in Figma) | Roboto from `@fontsource` renders slightly narrower than Figma's |
+| Loading indicator while the Theme panel downloads | Not in Figma | Needed so a slow download has feedback (`standards/web.md`, item 1); it is the Forest loading indicator and appears only after 250 ms. Open question: add a frame |
+| Snackbar "Couldn’t open Theme. Try again." | Not in Figma | The existing Forest snackbar with the same voice as the other messages; open question: add a frame |
+| Android Back | Does not close the sheet | No other screen uses history (`docs/decisions.md`); the Handoff note 59-9540 still lists Back and needs the same edit as DESIGN.md |
+| Expanded setup | Continue sits 16 px lower than in frame 56-77 | Present before this branch and outside the theme change |
+
+### Worst case (`break-ui`)
+
+| Found | Decision |
+| --- | --- |
+| Below 320 CSS px (a 412 px phone at 200% zoom or font scale) the three segments shrink to 57 px and the check icon and "System" overlap the next segment | Accepted: below the WCAG 1.4.10 reflow width of 320 px. Fixing it needs a layout M3 does not define for segmented buttons (open question) |
+
+Held up: the sheet at 320 and 360 (segments 95–102 px, no horizontal scroll); the placement app bar at 320 and at
+200% zoom (title wraps inside the bar, Back and Theme stay reachable); dark theme at every width; keyboard path with no
+console errors.
+
+### Not checked here
+
+- Swipe feel, tap delay and safe areas on a real phone: needs hardware.
+- `review-animations` is not installed for agents; it needs to be started by hand.
