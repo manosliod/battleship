@@ -1,0 +1,33 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "f=$(jq -r '.tool_input.file_path // empty'); case \"$f\" in *.java) cd \"$CLAUDE_PROJECT_DIR\" && ./gradlew -q spotlessApply -PspotlessIdeHook=\"$f\" >/dev/null ;; esac"
+          },
+          {
+            "type": "command",
+            "command": "f=$(jq -r '.tool_input.file_path // empty'); case \"$f\" in \"$CLAUDE_PROJECT_DIR\"/web/*) cd \"$CLAUDE_PROJECT_DIR/web\" && pnpm exec prettier --write --ignore-unknown \"$f\" >/dev/null ;; esac"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cd \"$CLAUDE_PROJECT_DIR\" && ./gradlew -q test >&2 || exit 2"
+          },
+          {
+            "type": "command",
+            "command": "cd \"$CLAUDE_PROJECT_DIR/web\" && pnpm -s test >&2 || exit 2"
+          }
+        ]
+      }
+    ]
+  }
+}
