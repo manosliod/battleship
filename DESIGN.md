@@ -143,6 +143,13 @@ mark in place of its icon.
 - **Keyboard and screen readers**: the picker is a radio group named "Theme" with radios System, Light and Dark. Tab
   enters the group on the selected radio, arrow keys move, Space or Enter selects. When the sheet or dialog opens, focus
   goes to the selected radio; Tab moves between the picker and Done; on close, focus returns to the Theme button.
+- **Loading and failure**: if the Theme picker has not loaded 250 ms after the press, the sheet or dialog opens in its
+  Loading state: same surface, scrim and title "Theme", with the Forest loading indicator (Steps=1, no container)
+  labelled "Loading Theme" where the picker goes; the dialog keeps Done. The picker replaces the indicator in the same
+  open surface. Closing it while loading cancels the open. If the download fails, no panel stays open and a snackbar
+  says "Couldn’t open Theme. Try again." (text only, no action, 4 s); the next press tries again. Frames: "Battle ·
+  Theme sheet · Compact · Loading · Light", "Battle · Theme dialog · Expanded · Loading · Light", "Battle · Theme load
+  failed · Compact · Light".
 - **Persistence**: the choice is stored in `localStorage` under `theme`. An inline script in `index.html` sets
   `data-theme` on `<html>` before first paint, so the page never shows the wrong theme. `<meta name="theme-color">`
   follows the applied theme (Teal LT or Teal DT Surface).

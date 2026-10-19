@@ -187,13 +187,3 @@
 		opacity: 0;
 	}
 }
-
-.delayed-reveal {
-	animation: delayed-reveal var(--motion-duration-short4) var(--ease-standard) var(--motion-duration-medium1) both;
-}
-
-@keyframes delayed-reveal {
-	from {
-		opacity: 0;
-	}
-}

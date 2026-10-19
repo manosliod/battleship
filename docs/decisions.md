@@ -106,15 +106,26 @@ not only on `<html>`.
 change of the device theme by itself. The tags are changed with `setAttribute`, which every browser and the test DOM
 treat the same way.
 
-## The Theme panel downloads on its own and fails with a snackbar
+## The Theme picker downloads on its own; the sheet and dialog do not
 
-**Chose:** the Theme panel (the Base UI drawer and dialog) is its own chunk, fetched when the pointer or focus reaches
-the Theme button and again when it is pressed. A failed download shows the snackbar "Couldn’t open Theme. Try again."
+**Chose:** the Theme picker is its own chunk, fetched when the pointer or focus reaches the Theme button and again when
+it is pressed. The sheet and dialog (the Base UI drawer and dialog) are in the first download. If the picker has not
+arrived 250 ms after the press, the sheet or dialog opens in its Loading state (title "Theme", the Forest loading
+indicator labelled "Loading Theme" where the picker goes, Done on the dialog), and the picker takes the indicator's
+place in the same open surface when it arrives. Closing it while loading cancels the open. A failed download closes
+the surface, returns focus to Theme and shows the snackbar "Couldn’t open Theme. Try again."; the next press tries
+again.
 
-**Instead of:** shipping it in the first download, or hiding a failure.
+**Instead of:** the whole panel as one chunk with the indicator alone over the screen, or the picker in the first
+download as well.
 
-**Why:** it is rarely opened (`standards/react.md`, "Performance"). The loading indicator that appears while it
-downloads is the Forest loading indicator, centred over the screen; Figma has no frame for it yet (open question).
+**Why:** the Figma frames "Battle · Theme sheet · Compact · Loading" and "Battle · Theme dialog · Expanded · Loading"
+show the surface open while the picker downloads, so the surface code must already be there. That costs about 27 kB
+gzip in the first download (entry 104.5 kB of the 125 kB budget); the picker chunk stays separate because it is rarely
+opened (`standards/react.md`, "Performance"). The 250 ms wait is read from `--motion-duration-medium1`, so a fast
+download opens straight on the picker with no flash of the indicator. Both the indicator slot and the picker are
+`--spacing-theme-picker` (310 px, the Figma Loading slot) wide, so the surface does not change size when the picker
+arrives.
 
 ## Sheet or dialog is chosen once per opening
 

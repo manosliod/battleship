@@ -86,10 +86,11 @@ The web app lives in `web/`. It is a React app built with Vite, and it can also 
   screens, and `shared/stores/theme-panel-store.ts` says whether it is open. The Theme button on each app bar only asks
   the store to open it. So a screen that changes while the panel is open (the engine finishing its download, for
   example) does not close it, and closing returns focus to the Theme button that is on screen now.
-- **The Theme panel downloads on its own**, as soon as the pointer or keyboard focus reaches the Theme button. If it is
-  still downloading when the button is pressed, a loading indicator fades in after a quarter of a second. Once
-  downloaded, it opens at once. If the download fails, a snackbar says "Couldn’t open Theme. Try again." and the next
-  press tries again.
+- **The Theme picker downloads on its own**, as soon as the pointer or keyboard focus reaches the Theme button; the
+  sheet and dialog around it are already there. If the picker is still downloading a quarter of a second after the
+  press, the sheet or dialog opens with a loading indicator where the picker goes, and the picker takes its place when
+  it arrives. Once downloaded, it opens at once. If the download fails, the sheet or dialog closes, a snackbar says
+  "Couldn’t open Theme. Try again." and the next press tries again.
 - **The game-over dialog waits for the Theme panel.** If the computer's last shot lands while the Theme panel is open,
   the dialog opens only once the panel has closed, so only one modal is ever on screen.
 - **Sheet or dialog is decided when Theme is pressed** (`shared/utils/window-class.ts`, which asks the browser for the

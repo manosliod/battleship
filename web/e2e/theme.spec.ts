@@ -125,8 +125,85 @@ test('the choice survives a reload and colours the page before the app script ru
 	await expect(page.getByRole('radio', { name: 'Dark' })).toBeChecked()
 })
 
+const panelChunk = /\/(src\/shared\/components\/theme\/theme-panel\.tsx|assets\/theme-panel-[^/]*\.js)$/
+
+async function holdPanelChunk(page: Page) {
+	let release: (action: 'continue' | 'abort') => void = () => undefined
+	const released = new Promise<'continue' | 'abort'>((resolve) => {
+		release = resolve
+	})
+	await page.route(panelChunk, async (route) => {
+		if ((await released) === 'abort') {
+			await route.abort()
+		} else {
+			await route.continue()
+		}
+	})
+	return release
+}
+
+const loading = (page: Page) => page.getByRole('progressbar', { name: 'Loading Theme' })
+
+test('a slow Theme panel download opens the sheet or dialog loading, then the picker in it', async ({ page }, info) => {
+	const release = await holdPanelChunk(page)
+	await page.goto('./')
+	await themeButton(page).click()
+	const panel = page.getByRole('dialog', { name: 'Theme' })
+	await expect(panel.getByRole('progressbar', { name: 'Loading Theme' })).toBeVisible()
+	await expect(panel.getByRole('button', { name: 'Done' })).toHaveCount(info.project.name === 'compact' ? 0 : 1)
+	const surface = await panel.elementHandle()
+	release('continue')
+	await expect(panel.getByRole('radiogroup', { name: 'Theme' })).toBeVisible()
+	await expect(loading(page)).toHaveCount(0)
+	expect(await panel.evaluate((node, before) => node === before, surface)).toBe(true)
+})
+
+test('closing the loading sheet or dialog cancels the open', async ({ page }, info) => {
+	const release = await holdPanelChunk(page)
+	await page.goto('./')
+	await themeButton(page).click()
+	await expect(loading(page)).toBeVisible()
+	if (info.project.name === 'compact') {
+		await page.keyboard.press('Escape')
+	} else {
+		await page.getByRole('button', { name: 'Done' }).click()
+	}
+	await expect(page.getByRole('dialog', { name: 'Theme' })).toHaveCount(0)
+	await expect(themeButton(page)).toBeFocused()
+	const arrived = page.waitForResponse(panelChunk)
+	release('continue')
+	await arrived
+	await page.waitForTimeout(500)
+	await expect(page.getByRole('dialog', { name: 'Theme' })).toHaveCount(0)
+	await openTheme(page)
+	await expect(loading(page)).toHaveCount(0)
+})
+
+test('the scrim closes the loading sheet or dialog', async ({ page }) => {
+	await holdPanelChunk(page)
+	await page.goto('./')
+	await themeButton(page).click()
+	await expect(loading(page)).toBeVisible()
+	await page.mouse.click(200, 100)
+	await expect(page.getByRole('dialog', { name: 'Theme' })).toHaveCount(0)
+	await expect(themeButton(page)).toBeFocused()
+})
+
+test('a download that fails while loading closes the panel and says so', async ({ page }) => {
+	const release = await holdPanelChunk(page)
+	await page.goto('./')
+	await themeButton(page).click()
+	await expect(loading(page)).toBeVisible()
+	release('abort')
+	await expect(page.getByText('Couldn’t open Theme. Try again.')).toBeVisible()
+	await expect(page.getByRole('dialog', { name: 'Theme' })).toHaveCount(0)
+	await expect(themeButton(page)).toBeFocused()
+	await page.unroute(panelChunk)
+	await openTheme(page)
+})
+
 test('a failed Theme panel download says so and the next tap opens it', async ({ page }) => {
-	const panel = /\/(src\/shared\/components\/theme\/theme-panel\.tsx|assets\/theme-panel-[^/]*\.js)$/
+	const panel = panelChunk
 	await page.route(panel, (route) => route.abort())
 	await page.goto('./')
 	await themeButton(page).click()

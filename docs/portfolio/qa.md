@@ -68,6 +68,12 @@ Held up: one-letter names, emoji and accented names, every screen at 412 and wid
 
 ## Theme choice (KAN-28)
 
+Loading state, 2026-10-19: checked at 412 × 917 and 1024 × 768 against frames 114-11814 (sheet, Loading), 114-11894
+(dialog, Loading) and 114-12012 (load failed), with the picker download held back by Playwright. Captures:
+`~/Sites/portfolio-studio/qa-captures/battleship-theme-loading-2026-10-19/`. Sheet content 342 px and dialog
+358 × 208 px match the frames in both the Loading and the loaded state; at 320 the picker and slot narrow to 288 px with
+no horizontal scroll.
+
 Date: 2026-10-18. Build: `web/` on `feat/theme-choice`. Checked with Playwright (Chromium) at the Figma frame widths:
 412 × 917 (Theme sheet, light and dark), 600 × 960 (medium battle with the dialog), 1024 × 768 (Theme dialog, light and
 dark; setup with the Theme button), and at 320 and 360 for the worst case. Each screenshot was compared with the
@@ -87,14 +93,17 @@ dark; setup with the Theme button), and at 320 and 360 for the worst case. Each 
 | System follows a live change of the device theme | e2e |
 | A choice in another tab reaches this one | e2e |
 | A failed panel download shows a snackbar and the next press opens it | unit and e2e |
+| A picker download slower than 250 ms opens the sheet or dialog in its Loading state ("Loading Theme"), then the picker in the same surface | `theme-panel-loading.test.tsx`, e2e |
+| Done, Escape or the scrim close the Loading state and the open is cancelled; a failure while loading closes it, focus returns to Theme | unit and e2e |
 
 ### Accepted differences
 
 | Where | Difference | Why it is accepted |
 | --- | --- | --- |
-| Sheet and dialog | Text and segments sit 1–3 px off the frame (picker 306 px wide in code, 309 in Figma) | Roboto from `@fontsource` renders slightly narrower than Figma's |
-| Loading indicator while the Theme panel downloads | Not in Figma | Needed so a slow download has feedback (`standards/web.md`, item 1); it is the Forest loading indicator and appears only after 250 ms. Open question: add a frame |
-| Snackbar "Couldn’t open Theme. Try again." | Not in Figma | The existing Forest snackbar with the same voice as the other messages; open question: add a frame |
+| Sheet and dialog | Segment labels sit 1–3 px off the frame | Roboto from `@fontsource` renders slightly narrower than Figma's; the picker itself is 310 px wide like the frame |
+| Theme dialog, Loading | Done sits 4 px right of frame 114-11894 | The text button is 4 px narrower than the kit's for the same font reason; the dialog is 358 × 208 as in the frame |
+| Theme sheet and dialog, Loading | With reduced motion the indicator pulses in opacity, so a capture can show it paler than frames 114-11814 and 114-11894 | The Forest reduced-motion variant of the loading indicator |
+| Theme load failed | After the failure the Theme button shows its focus state, which frame 114-12012 does not | Focus returns to Theme when the surface closes (`standards/web.md`, focus) |
 | Android Back | Does not close the sheet | No other screen uses history (`docs/decisions.md`); the Handoff note 59-9540 still lists Back and needs the same edit as DESIGN.md |
 | Expanded setup | Continue sits 16 px lower than in frame 56-77 | Present before this branch and outside the theme change |
 
