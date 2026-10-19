@@ -30,10 +30,6 @@ export function createThemeStore(service: ThemeService, events: WindowEvents) {
 		}
 	}
 
-	const reread = () => {
-		show(service.read())
-	}
-
 	const onStorage = (event: Event) => {
 		const theme = event instanceof StorageEvent ? service.readEvent(event) : null
 		if (theme !== null) {
@@ -43,7 +39,7 @@ export function createThemeStore(service: ThemeService, events: WindowEvents) {
 
 	const onPageShow = (event: Event) => {
 		if (event instanceof PageTransitionEvent && event.persisted) {
-			reread()
+			show(service.read())
 		}
 	}
 
@@ -55,7 +51,7 @@ export function createThemeStore(service: ThemeService, events: WindowEvents) {
 		if (subscribers === 1) {
 			events.addEventListener('storage', onStorage)
 			events.addEventListener('pageshow', onPageShow)
-			reread()
+			show(service.read())
 		}
 		return () => {
 			unsubscribe()

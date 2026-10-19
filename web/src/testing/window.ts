@@ -1,7 +1,7 @@
 import { vi } from 'vitest'
 
 export function mockWindowClass(compact: boolean) {
-	const list = { matches: !compact, addEventListener: vi.fn(), removeEventListener: vi.fn() }
+	const list = { matches: !compact }
 	vi.stubGlobal(
 		'matchMedia',
 		vi.fn(() => list)

@@ -1,3 +1,10 @@
+export type ModalSurfaceProps = Readonly<{
+	open: boolean
+	onOpenChange: (open: boolean) => void
+	onOpenChangeComplete: (open: boolean) => void
+	finalFocus: () => HTMLElement | null
+}>
+
 export const dialogScrim = 'dialog-scrim fixed inset-0 z-20 bg-scrim'
 
 export const dialogPopup =

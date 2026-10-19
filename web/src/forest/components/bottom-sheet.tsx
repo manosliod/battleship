@@ -1,14 +1,9 @@
 import { Drawer } from '@base-ui/react/drawer'
 import type { ReactNode } from 'react'
 
-type BottomSheetProps = {
-	open: boolean
-	onOpenChange: (open: boolean) => void
-	title: string
-	onOpenChangeComplete: (open: boolean) => void
-	finalFocus: () => HTMLElement | null
-	children: ReactNode
-}
+import type { ModalSurfaceProps } from './dialog-surface'
+
+type BottomSheetProps = ModalSurfaceProps & { title: string; children: ReactNode }
 
 export function BottomSheet({
 	open,

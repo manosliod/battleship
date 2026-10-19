@@ -3,16 +3,9 @@ import type { ReactNode } from 'react'
 
 import { Button } from './button'
 import { dialogActions, dialogPopup, dialogScrim } from './dialog-surface'
+import type { ModalSurfaceProps } from './dialog-surface'
 
-type BasicDialogProps = {
-	open: boolean
-	onOpenChange: (open: boolean) => void
-	title: string
-	onOpenChangeComplete: (open: boolean) => void
-	finalFocus: () => HTMLElement | null
-	action: string
-	children: ReactNode
-}
+type BasicDialogProps = ModalSurfaceProps & { title: string; action: string; children: ReactNode }
 
 export function BasicDialog({
 	open,
