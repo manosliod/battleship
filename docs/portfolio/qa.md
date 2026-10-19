@@ -65,3 +65,59 @@ and "J". The name has no length limit in the engine or the form.
 | Marks could be larger than a shrunken cell | Marks and miss dots are capped to the cell size |
 
 Held up: one-letter names, emoji and accented names, every screen at 412 and wider.
+
+## Theme choice (KAN-28)
+
+Loading state, 2026-10-19: checked at 412 × 917 and 1024 × 768 against frames 114-11814 (sheet, Loading), 114-11894
+(dialog, Loading) and 114-12012 (load failed), with the picker download held back by Playwright. Captures:
+`~/Sites/portfolio-studio/qa-captures/battleship-theme-loading-2026-10-19/`. Sheet content 342 px and dialog
+358 × 208 px match the frames in both the Loading and the loaded state; at 320 the picker and slot narrow to 288 px with
+no horizontal scroll.
+
+Date: 2026-10-18. Build: `web/` on `feat/theme-choice`. Checked with Playwright (Chromium) at the Figma frame widths:
+412 × 917 (Theme sheet, light and dark), 600 × 960 (medium battle with the dialog), 1024 × 768 (Theme dialog, light and
+dark; setup with the Theme button), and at 320 and 360 for the worst case. Each screenshot was compared with the
+`get_screenshot` render of the matching frame (sheet 83-10505 / 83-10562, dialog 92-11401 / 92-11499, setup 56-2 /
+56-77, medium 58-7112).
+
+| Behaviour | Checked by |
+| --- | --- |
+| Theme button in every app bar, icon = current choice | `theme-button.test.tsx`, screenshots |
+| Compact opens the sheet, medium and expanded the dialog with Done | `theme-button.test.tsx`, `e2e/theme.spec.ts` |
+| A choice applies at once and the panel stays open | unit and e2e |
+| Escape, scrim tap, Done and a swipe down close it; focus returns to Theme | e2e |
+| Sheet or dialog stays the same while open when the window is resized | unit and e2e |
+| Radio group named "Theme"; arrow keys move the choice | e2e |
+| Stored under `theme`; applied before the app script runs; `color-scheme` and `theme-color` follow | `pre-paint.test.ts`, `theme-service.test.ts`, e2e |
+| A storage that throws or refuses writes falls back to System | unit and e2e |
+| System follows a live change of the device theme | e2e |
+| A choice in another tab reaches this one | e2e |
+| A failed panel download shows a snackbar and the next press opens it | unit and e2e |
+| A picker download slower than 250 ms opens the sheet or dialog in its Loading state ("Loading Theme"), then the picker in the same surface | `theme-panel-loading.test.tsx`, e2e |
+| Done, Escape or the scrim close the Loading state and the open is cancelled; a failure while loading closes it, focus returns to Theme | unit and e2e |
+
+### Accepted differences
+
+| Where | Difference | Why it is accepted |
+| --- | --- | --- |
+| Sheet and dialog | Segment labels sit 1–3 px off the frame | Roboto from `@fontsource` renders slightly narrower than Figma's; the picker itself is 310 px wide like the frame |
+| Theme dialog, Loading | Done sits 4 px right of frame 114-11894 | The text button is 4 px narrower than the kit's for the same font reason; the dialog is 358 × 208 as in the frame |
+| Theme sheet and dialog, Loading | With reduced motion the indicator pulses in opacity, so a capture can show it paler than frames 114-11814 and 114-11894 | The Forest reduced-motion variant of the loading indicator |
+| Theme load failed | After the failure the Theme button shows its focus state, which frame 114-12012 does not | Focus returns to Theme when the surface closes (`standards/web.md`, focus) |
+| Android Back | Does not close the sheet | No other screen uses history (`docs/decisions.md`); the Handoff note 59-9540 still lists Back and needs the same edit as DESIGN.md |
+| Expanded setup | Continue sits 16 px lower than in frame 56-77 | Present before this branch and outside the theme change |
+
+### Worst case (`break-ui`)
+
+| Found | Decision |
+| --- | --- |
+| Below 320 CSS px (a 412 px phone at 200% zoom or font scale) the three segments shrink to 57 px and the check icon and "System" overlap the next segment | Accepted: below the WCAG 1.4.10 reflow width of 320 px. Fixing it needs a layout M3 does not define for segmented buttons (open question) |
+
+Held up: the sheet at 320 and 360 (segments 95–102 px, no horizontal scroll); the placement app bar at 320 and at
+200% zoom (title wraps inside the bar, Back and Theme stay reachable); dark theme at every width; keyboard path with no
+console errors.
+
+### Not checked here
+
+- Swipe feel, tap delay and safe areas on a real phone: needs hardware.
+- `review-animations` is not installed for agents; it needs to be started by hand.

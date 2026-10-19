@@ -2,6 +2,8 @@ import { AppBar } from '@/forest/components/app-bar'
 import { Dialog } from '@/forest/components/dialog'
 import { IconButton } from '@/forest/components/icon-button'
 import { Board } from '@/shared/components/board/board'
+import { ThemeButton } from '@/shared/components/theme/theme-button'
+import { useThemePanelShown } from '@/shared/stores/theme-panel-store'
 import type { EngineSession } from '@/shared/types/game'
 
 import { useEnemyCells, useHomeCells } from '../hooks/use-board-cells'
@@ -53,6 +55,7 @@ function BattleContent({ player, onLeave, onPlayAgain }: Omit<BattleScreenProps,
 			<AppBar
 				title="Battle"
 				leading={<IconButton icon="arrowBack" label="Back" onClick={turn === 'over' ? onLeave : openLeave} />}
+				trailing={<ThemeButton />}
 			/>
 			<main className="flex flex-1 p-4 medium:p-6">
 				<div className="battle-layout">
@@ -100,6 +103,7 @@ function BattleDialogs({ player, onLeave, onPlayAgain }: BattleDialogsProps) {
 	const snapshot = useSnapshot()
 	const home = useHomeShots()
 	const { closeDialog } = useBattleActions()
+	const themeShown = useThemePanelShown()
 	const onOpenChange = (open: boolean) => {
 		if (!open) {
 			closeDialog()
@@ -109,7 +113,7 @@ function BattleDialogs({ player, onLeave, onPlayAgain }: BattleDialogsProps) {
 	return (
 		<>
 			<Dialog
-				open={dialog === 'over'}
+				open={dialog === 'over' && !themeShown}
 				onOpenChange={onOpenChange}
 				title={won ? `You win, ${player}` : 'Computer wins'}
 				description={

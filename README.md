@@ -16,7 +16,8 @@ the browser plays the same engine compiled to JavaScript with TeaVM, behind a mo
 - Place ships by hand (rotate, move, reset) or let the game place them at random
 - A computer that hunts on a spaced pattern and follows a line after a hit
 - Plays in the terminal and in the browser, from the same Java code
-- Phone first, with tablet and desktop layouts, light and dark themes
+- Phone first, with tablet and desktop layouts, and a Theme button to pick System, Light or Dark; the choice is
+  remembered and applied before the page first shows
 - Aim then fire on touch, full keyboard play, and every shot announced to screen readers
 
 ## Stack

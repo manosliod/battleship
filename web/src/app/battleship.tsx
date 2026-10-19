@@ -2,6 +2,7 @@ import { Activity, useState } from 'react'
 
 import { SetupScreen } from '@/features/setup/components/setup-screen'
 import { SnackbarProvider } from '@/forest/components/snackbar'
+import { ThemePanelHost } from '@/shared/components/theme/theme-panel-host'
 
 import { Game, preloadGame } from './game'
 
@@ -31,6 +32,7 @@ export function Battleship() {
 					}}
 				/>
 			) : null}
+			<ThemePanelHost />
 		</SnackbarProvider>
 	)
 }

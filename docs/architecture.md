@@ -71,6 +71,31 @@ The web app lives in `web/`. It is a React app built with Vite, and it can also 
 - When the battle screen goes away, for any reason, it stops the computer's pending reply and hides the snackbar.
 - `shared/hooks/use-reduced-motion.ts` follows the system "reduce motion" setting. When it is on, the computer's reply
   shows at once instead of after a short pause.
+- `shared/components/theme/` is the Theme button, shown at the trailing end of every app bar, and the Theme panel it
+  opens: a bottom sheet on a phone, a dialog on wider windows. `shared/stores/theme-store.ts` holds the choice (System,
+  the default, Light or Dark) for the whole app, and `shared/services/theme-service.ts` is the only code that touches
+  `localStorage` (key `theme`) and the page's `data-theme`, `color-scheme` and `theme-color` tags.
+- **The theme is set before the app starts.** A short script in `index.html` reads the saved choice and marks the page
+  (`data-theme`) before anything is drawn, so a returning player never sees the wrong colours flash. Choosing in the
+  Theme panel saves the choice and marks the page again at once. On System the browser follows the device setting,
+  live, through CSS; no code watches it. A choice made in another tab arrives through the browser's `storage` event;
+  the store listens for it only while some part of the page shows the theme, and stops when nothing does. It also
+  reads the saved choice again whenever something starts showing the theme and when the browser brings the page back
+  from its back-forward cache, so a choice made elsewhere in the meantime is never missed.
+- **There is one Theme panel for the whole app.** It lives in the app shell (`theme-panel-host.tsx`), next to the
+  screens, and `shared/stores/theme-panel-store.ts` says whether it is open. The Theme button on each app bar only asks
+  the store to open it. So a screen that changes while the panel is open (the engine finishing its download, for
+  example) does not close it, and closing returns focus to the Theme button that is on screen now.
+- **The Theme picker downloads on its own**, as soon as the pointer or keyboard focus reaches the Theme button; the
+  sheet and dialog around it are already there. If the picker is still downloading a quarter of a second after the
+  press, the sheet or dialog opens with a loading indicator where the picker goes, and the picker takes its place when
+  it arrives. Once downloaded, it opens at once. If the download fails, the sheet or dialog closes, a snackbar says
+  "Couldn’t open Theme. Try again." and the next press tries again.
+- **The game-over dialog waits for the Theme panel.** If the computer's last shot lands while the Theme panel is open,
+  the dialog opens only once the panel has closed, so only one modal is ever on screen.
+- **Sheet or dialog is decided when Theme is pressed** (`shared/utils/window-class.ts`, which asks the browser for the
+  600 dp medium breakpoint that `styles/tokens.css` sets, so the width is written in one place only). It stays the
+  same until the panel closes, even if the window is resized, and closing always returns focus to the Theme button.
 
 The engine answers your shot and the computer's reply in one call. The battle screen shows your shot at once and the
 reply a moment later, so you can follow both.

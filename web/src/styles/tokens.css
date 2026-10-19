@@ -1,8 +1,22 @@
-@theme {
+@custom-variant dark {
+	&:where([data-theme='dark'], [data-theme='dark'] *) {
+		@slot;
+	}
+
+	@media (prefers-color-scheme: dark) {
+		&:where(:root:not([data-theme='light']), :root:not([data-theme='light']) *) {
+			@slot;
+		}
+	}
+}
+
+@theme static {
 	--breakpoint-*: initial;
 	--breakpoint-medium: 600px;
 	--breakpoint-expanded: 840px;
+}
 
+@theme {
 	--font-sans: 'Roboto', system-ui, sans-serif;
 
 	--text-headline-medium: 28px;
@@ -77,6 +91,10 @@
 	--spacing-control: 40px;
 	--spacing-field: 56px;
 	--spacing-dialog: 312px;
+	--spacing-sheet: 640px;
+	--spacing-handle-width: 32px;
+	--spacing-handle-height: 4px;
+	--spacing-handle-area: 36px;
 	--spacing-message: 320px;
 	--spacing-dialog-margin: 24px;
 	--spacing-snackbar: 400px;
@@ -86,6 +104,7 @@
 	--spacing-loading: 48px;
 	--spacing-loading-shape-width: 33px;
 	--spacing-loading-shape-height: 34px;
+	--spacing-theme-picker: 310px;
 
 	--shadow-elevation-3: 0 1px 3px 0 rgb(0 0 0 / 30%), 0 4px 8px 3px rgb(0 0 0 / 15%);
 
@@ -136,8 +155,8 @@
 	--sys-surface-container-highest: #dde4e1;
 }
 
-@media (prefers-color-scheme: dark) {
-	:root {
+:root {
+	@variant dark {
 		--sys-primary: #82d5c7;
 		--sys-on-primary: #003731;
 		--sys-primary-container: #006b5f;

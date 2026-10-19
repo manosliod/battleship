@@ -70,3 +70,88 @@ closed session.
 The engine removes spaces around a name with Java's `strip()`, which also removes four rarely typed control
 characters (U+001C to U+001F) that JavaScript's `trim()` keeps. The name screen refuses a name made only of those
 characters too, so a name it accepts is never refused later by the engine.
+
+## The theme choice is one store for the whole app
+
+**Chose:** a module-level store in `web/src/shared/stores/`, read by the Theme button in every app bar.
+
+**Instead of:** a store per screen, or a feature folder for the theme.
+
+**Why:** the choice belongs to the whole app (`standards/react.md`, "State"), and setup, placement, battle and the
+engine screens all show the button. Features may not import each other, so the button and its store live in `shared/`.
+The store adds its `storage` listener when the first component subscribes and removes it when the last one leaves, so
+no listener outlives the page's use of it and tests start clean.
+
+## Dark colours are written once
+
+**Chose:** a Tailwind `dark` custom variant used once around the dark token values. It matches an element when the page
+(or an ancestor) has `data-theme='dark'`, and, under `@media (prefers-color-scheme: dark)`, when the page is not set to
+Light: `:where([data-theme='dark'], [data-theme='dark'] *)` and `:where(:root:not([data-theme='light']),
+:root:not([data-theme='light']) *)`. On `:root` these are the two rules `standards/web.md` asks for.
+
+**Instead of:** copying the dark values into two blocks, or `light-dark()`.
+
+**Why:** one copy of the Figma values cannot drift, and the same variant makes `dark:` utilities right on any element,
+not only on `<html>`.
+
+## The theme-color and color-scheme tags follow the choice
+
+**Chose:** for Light or Dark, the matching `<meta name="theme-color">` gets `media="all"` and the other `not all`, and
+`<meta name="color-scheme">` names the chosen scheme. System puts back the two `prefers-color-scheme` queries and
+`light dark`.
+
+**Instead of:** writing a colour into the tag from script.
+
+**Why:** the colours stay in `index.html` once, the script holds no colour values, and on System the browser follows a
+change of the device theme by itself. The tags are changed with `setAttribute`, which every browser and the test DOM
+treat the same way.
+
+## The Theme picker downloads on its own; the sheet and dialog do not
+
+**Chose:** the Theme picker is its own chunk, fetched when the pointer or focus reaches the Theme button and again when
+it is pressed. The sheet and dialog (the Base UI drawer and dialog) are in the first download. If the picker has not
+arrived 250 ms after the press, the sheet or dialog opens in its Loading state (title "Theme", the Forest loading
+indicator labelled "Loading Theme" where the picker goes, Done on the dialog), and the picker takes the indicator's
+place in the same open surface when it arrives. Closing it while loading cancels the open. A failed download closes
+the surface, returns focus to Theme and shows the snackbar "Couldn’t open Theme. Try again."; the next press tries
+again.
+
+**Instead of:** the whole panel as one chunk with the indicator alone over the screen, or the picker in the first
+download as well.
+
+**Why:** the Figma frames "Battle · Theme sheet · Compact · Loading" and "Battle · Theme dialog · Expanded · Loading"
+show the surface open while the picker downloads, so the surface code must already be there. That costs about 27 kB
+gzip in the first download (entry 104.5 kB of the 125 kB budget); the picker chunk stays separate because it is rarely
+opened (`standards/react.md`, "Performance"). The 250 ms wait is read from `--motion-duration-medium1`, so a fast
+download opens straight on the picker with no flash of the indicator. Both the indicator slot and the picker are
+`--spacing-theme-picker` (310 px, the Figma Loading slot) wide, so the surface does not change size when the picker
+arrives.
+
+## Sheet or dialog is chosen once per opening
+
+**Chose:** the window class is read when Theme is pressed, and the sheet or dialog stays the same until it closes.
+
+**Instead of:** following the window width live.
+
+**Why:** a resize (a phone turned sideways, a split screen) would otherwise swap the open sheet for a dialog under the
+player's finger and lose focus. Reading the width only on press also means no listener runs while the panel is closed.
+
+## Android Back does not close the sheet
+
+**Chose:** scrim tap, swipe down and Escape close the Theme sheet; Done, Escape and scrim tap close the dialog.
+
+**Instead of:** a history entry per opening so the system Back gesture closes it.
+
+**Why:** the app has no router and no other screen uses history; adding one for this panel would make Back behave
+differently here than everywhere else. DESIGN.md says the same.
+
+## The game-over dialog waits until Theme closes
+
+**Chose:** when the game ends while the Theme panel is open, the panel stays open and the game-over dialog opens once
+the player closes it. The status line already says who won behind the panel.
+
+**Instead of:** closing the Theme panel when the game ends.
+
+**Why:** M3 shows one modal at a time and never takes a surface away from the player while they are using it; the
+player opened Theme on purpose, and the result is not lost by waiting. Two modals at once would also give two focus
+traps.

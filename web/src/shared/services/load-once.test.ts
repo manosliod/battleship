@@ -35,4 +35,26 @@ describe('load once', () => {
 		loader.retry()
 		expect(await loader.load()).toBe(1)
 	})
+
+	it('gives the loaded value once the load has finished', async () => {
+		let resolve: (value: string) => void = () => undefined
+		const loader = loadOnce(
+			() =>
+				new Promise<string>((done) => {
+					resolve = done
+				})
+		)
+		expect(loader.current()).toBeUndefined()
+		const pending = loader.load()
+		expect(loader.current()).toBeUndefined()
+		resolve('loaded')
+		await pending
+		expect(loader.current()).toBe('loaded')
+	})
+
+	it('has no value after a failure', async () => {
+		const loader = loadOnce<string>(() => Promise.reject(new Error('offline')))
+		await expect(loader.load()).rejects.toThrow('offline')
+		expect(loader.current()).toBeUndefined()
+	})
 })

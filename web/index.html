@@ -6,9 +6,29 @@
 			name="viewport"
 			content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content"
 		/>
-		<meta name="theme-color" content="#f4fbf8" media="(prefers-color-scheme: light)" />
-		<meta name="theme-color" content="#0e1513" media="(prefers-color-scheme: dark)" />
+		<meta name="theme-color" content="#f4fbf8" media="(prefers-color-scheme: light)" data-scheme="light" />
+		<meta name="theme-color" content="#0e1513" media="(prefers-color-scheme: dark)" data-scheme="dark" />
 		<meta name="color-scheme" content="light dark" />
+		<script>
+			;(() => {
+				const key = 'theme'
+				const choices = ['system', 'light', 'dark']
+				let theme = 'system'
+				try {
+					const stored = localStorage.getItem(key)
+					if (choices.includes(stored)) {
+						theme = stored
+					}
+				} catch {}
+				document.documentElement.dataset.theme = theme
+				if (theme !== 'system') {
+					document.querySelector('meta[name="color-scheme"]').setAttribute('content', theme)
+					for (const meta of document.querySelectorAll('meta[name="theme-color"]')) {
+						meta.setAttribute('media', meta.dataset.scheme === theme ? 'all' : 'not all')
+					}
+				}
+			})()
+		</script>
 		<meta
 			name="description"
 			content="Battleship: sink the computer's fleet, a Java game core running in the browser."
