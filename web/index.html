@@ -11,10 +11,11 @@
 		<meta name="color-scheme" content="light dark" />
 		<script>
 			;(() => {
+				const key = 'theme'
 				const choices = ['system', 'light', 'dark']
 				let theme = 'system'
 				try {
-					const stored = localStorage.getItem('theme')
+					const stored = localStorage.getItem(key)
 					if (choices.includes(stored)) {
 						theme = stored
 					}

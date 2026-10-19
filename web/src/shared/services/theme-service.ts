@@ -3,7 +3,7 @@ import { z } from 'zod'
 import { themeChoices } from '@/forest/theme'
 import type { ThemeChoice } from '@/forest/theme'
 
-const storageKey = 'theme'
+export const storageKey = 'theme'
 const themeSchema = z.enum(themeChoices)
 
 type ThemeStorage = Pick<Storage, 'getItem' | 'setItem'>
