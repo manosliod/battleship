@@ -1,3 +1,3 @@
-import { breakpoints } from '@/styles/breakpoints'
+const mediumBreakpoint = () => getComputedStyle(document.documentElement).getPropertyValue('--breakpoint-medium')
 
-export const isCompactWindow = () => !window.matchMedia(`(width >= ${String(breakpoints.medium)}px)`).matches
+export const isCompactWindow = () => !window.matchMedia(`(width >= ${mediumBreakpoint()})`).matches

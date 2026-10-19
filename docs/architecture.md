@@ -92,9 +92,9 @@ The web app lives in `web/`. It is a React app built with Vite, and it can also 
   press tries again.
 - **The game-over dialog waits for the Theme panel.** If the computer's last shot lands while the Theme panel is open,
   the dialog opens only once the panel has closed, so only one modal is ever on screen.
-- **Sheet or dialog is decided when Theme is pressed** (`shared/utils/window-class.ts`, the 600 dp medium breakpoint
-  kept in `styles/breakpoints.ts` and checked against `tokens.css` by a test). It stays the same until the panel
-  closes, even if the window is resized, and closing always returns focus to the Theme button.
+- **Sheet or dialog is decided when Theme is pressed** (`shared/utils/window-class.ts`, which asks the browser for the
+  600 dp medium breakpoint that `styles/tokens.css` sets, so the width is written in one place only). It stays the
+  same until the panel closes, even if the window is resized, and closing always returns focus to the Theme button.
 
 The engine answers your shot and the computer's reply in one call. The battle screen shows your shot at once and the
 reply a moment later, so you can follow both.
