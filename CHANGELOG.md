@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/manosliod/battleship/compare/v1.0.1...v1.1.0) (2026-10-19)
+
+
+### ✨ Features
+
+* KAN-28 let the player choose System, Light or Dark ([#21](https://github.com/manosliod/battleship/issues/21)) ([54838b8](https://github.com/manosliod/battleship/commit/54838b8ee1a442c2ad4da1f5c81a1d7803473115))
+
 ## [1.0.1](https://github.com/manosliod/battleship/compare/v1.0.0...v1.0.1) (2026-10-18)
 
 
