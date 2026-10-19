@@ -178,12 +178,12 @@
 
 @media (prefers-reduced-motion: reduce) {
 	.sheet-popup {
-		transition-property: transform, opacity;
+		transition-property: opacity;
 	}
 
 	.sheet-popup[data-starting-style],
 	.sheet-popup[data-ending-style] {
-		transform: none;
+		transform: translateY(var(--drawer-swipe-movement-y, 0));
 		opacity: 0;
 	}
 }

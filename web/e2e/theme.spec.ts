@@ -75,6 +75,38 @@ test('dragging the sheet down closes it on compact', async ({ page }, info) => {
 	await expect(themeButton(page)).toBeFocused()
 })
 
+test('with reduced motion a dragged-down sheet fades where it was let go', async ({ page }, info) => {
+	test.skip(info.project.name !== 'compact', 'the sheet is the compact window class only')
+	await page.goto('./')
+	await openTheme(page)
+	const sheet = page.getByRole('dialog', { name: 'Theme' })
+	const box = await sheet.boundingBox()
+	expect(box).not.toBeNull()
+	const x = (box?.x ?? 0) + 200
+	const y = (box?.y ?? 0) + 16
+	await page.mouse.move(x, y)
+	await page.mouse.down()
+	await page.mouse.move(x, y + 60, { steps: 4 })
+	await page.mouse.move(x, y + 100, { steps: 6 })
+	const released = await sheet.evaluate((popup) => popup.getBoundingClientRect().top)
+	await sheet.evaluate((popup) => {
+		const tops: number[] = []
+		const sample = () => {
+			if (popup.isConnected) {
+				tops.push(popup.getBoundingClientRect().top)
+				requestAnimationFrame(sample)
+			}
+		}
+		requestAnimationFrame(sample)
+		Object.assign(window, { sheetTops: tops })
+	})
+	await page.mouse.up()
+	await expect(picker(page)).toBeHidden()
+	const tops = await page.evaluate(() => (window as unknown as { sheetTops: number[] }).sheetTops)
+	expect(tops.length).toBeGreaterThan(0)
+	expect(Math.min(...tops)).toBeGreaterThanOrEqual(released - 1)
+})
+
 test('the choice survives a reload and colours the page before the app script runs', async ({ page }) => {
 	await page.emulateMedia({ colorScheme: 'light' })
 	await page.goto('./')
