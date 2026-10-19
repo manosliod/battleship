@@ -134,3 +134,13 @@ player's finger and lose focus. Reading the width only on press also means no li
 **Why:** the app has no router and no other screen uses history; adding one for this panel would make Back behave
 differently here than everywhere else. DESIGN.md says the same.
 
+## The game-over dialog waits until Theme closes
+
+**Chose:** when the game ends while the Theme panel is open, the panel stays open and the game-over dialog opens once
+the player closes it. The status line already says who won behind the panel.
+
+**Instead of:** closing the Theme panel when the game ends.
+
+**Why:** M3 shows one modal at a time and never takes a surface away from the player while they are using it; the
+player opened Theme on purpose, and the result is not lost by waiting. Two modals at once would also give two focus
+traps.

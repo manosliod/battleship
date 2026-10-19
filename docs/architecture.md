@@ -88,6 +88,8 @@ The web app lives in `web/`. It is a React app built with Vite, and it can also 
   still downloading when the button is pressed, a loading indicator fades in after a quarter of a second. Once
   downloaded, it opens at once. If the download fails, a snackbar says "Couldn’t open Theme. Try again." and the next
   press tries again.
+- **The game-over dialog waits for the Theme panel.** If the computer's last shot lands while the Theme panel is open,
+  the dialog opens only once the panel has closed, so only one modal is ever on screen.
 - **Sheet or dialog is decided when Theme is pressed** (`shared/utils/window-class.ts`, the 600 dp medium breakpoint
   kept in `styles/breakpoints.ts` and checked against `tokens.css` by a test). It stays the same until the panel
   closes, even if the window is resized, and closing always returns focus to the Theme button.

@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test'
 import type { Page } from '@playwright/test'
 
-import { startGame } from './play'
+import { cell, placeAtRandomAndStart, startGame } from './play'
 
 const lightSurface = 'rgb(244, 251, 248)'
 const darkSurface = 'rgb(14, 21, 19)'
@@ -176,4 +176,44 @@ test('an open Theme panel stays open while the engine finishes loading', async (
 	await page.keyboard.press('Escape')
 	await expect(picker(page)).toBeHidden()
 	await expect(themeButton(page)).toBeFocused()
+})
+
+test('the game-over dialog waits until the Theme panel has closed', async ({ page }) => {
+	await page.addInitScript(() => {
+		Math.random = () => 0
+	})
+	await page.clock.install()
+	await page.emulateMedia({ reducedMotion: 'no-preference' })
+	await startGame(page)
+	await placeAtRandomAndStart(page)
+	const over = page.getByRole('alertdialog')
+	const shipsLeft = page.getByRole('grid', { name: 'Ada’s fleet' }).getByRole('gridcell', { name: /, ship$/ })
+	const targets = Array.from(
+		{ length: 100 },
+		(_, index) => `${'JIHGFEDCBA'.charAt(Math.floor(index / 10))}${String(10 - (index % 10))}`
+	)
+	for (const name of targets) {
+		const lastShip = (await shipsLeft.count()) === 1
+		const target = cell(page, 'Enemy waters', name)
+		await target.click()
+		await target.click()
+		if (lastShip) {
+			await openTheme(page)
+			await page.clock.runFor(1000)
+			await expect(shipsLeft).toHaveCount(0)
+			await expect(picker(page)).toBeVisible()
+			await expect(over).toHaveCount(0)
+			await page.clock.resume()
+			await page.keyboard.press('Escape')
+			await expect(picker(page)).toBeHidden()
+			await expect(over).toBeVisible()
+			await expect(over).toContainText('Computer wins')
+			await expect(page.getByRole('dialog', { name: 'Theme' })).toHaveCount(0)
+			expect(await over.evaluate((dialog) => dialog.contains(document.activeElement))).toBe(true)
+			return
+		}
+		await page.clock.runFor(1000)
+		await expect(page.getByRole('heading', { name: 'Your turn' })).toBeVisible()
+	}
+	throw new Error('the computer never sank the fleet')
 })
