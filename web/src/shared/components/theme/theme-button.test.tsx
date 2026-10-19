@@ -1,4 +1,4 @@
-import { act, fireEvent, render, screen, within } from '@testing-library/react'
+import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import brightnessAuto from '@/forest/assets/icons/brightness_auto.svg'
@@ -7,10 +7,12 @@ import { mockWindowClass } from '@/testing/window'
 
 const renderButton = async () => {
 	const { ThemeButton } = await import('./theme-button')
+	const { ThemePanelHost } = await import('./theme-panel-host')
 	const { SnackbarProvider } = await import('@/forest/components/snackbar')
 	render(
 		<SnackbarProvider>
 			<ThemeButton />
+			<ThemePanelHost />
 		</SnackbarProvider>
 	)
 	return screen.getByRole('button', { name: 'Theme' })
@@ -82,6 +84,20 @@ describe('theme button', () => {
 		expect(
 			within(screen.getByRole('dialog', { name: 'Theme' })).queryByRole('button', { name: 'Done' })
 		).not.toBeInTheDocument()
+	})
+
+	it('opens at once, without waiting, after the first time', async () => {
+		mockWindowClass(false)
+		const button = await renderButton()
+		const dialog = await open(button)
+		fireEvent.click(within(dialog).getByRole('button', { name: 'Done' }))
+		await waitFor(() => {
+			expect(screen.queryByRole('dialog', { name: 'Theme' })).not.toBeInTheDocument()
+		})
+		act(() => {
+			fireEvent.click(button)
+		})
+		expect(screen.getByRole('dialog', { name: 'Theme' })).toBeInTheDocument()
 	})
 
 	it('says so in a snackbar when the panel cannot be downloaded, and opens on the next try', async () => {

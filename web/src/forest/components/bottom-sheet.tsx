@@ -1,17 +1,25 @@
 import { Drawer } from '@base-ui/react/drawer'
-import type { ReactNode, RefObject } from 'react'
+import type { ReactNode } from 'react'
 
 type BottomSheetProps = {
 	open: boolean
 	onOpenChange: (open: boolean) => void
 	title: string
-	finalFocus: RefObject<HTMLElement | null>
+	onOpenChangeComplete: (open: boolean) => void
+	finalFocus: () => HTMLElement | null
 	children: ReactNode
 }
 
-export function BottomSheet({ open, onOpenChange, title, finalFocus, children }: BottomSheetProps) {
+export function BottomSheet({
+	open,
+	onOpenChange,
+	onOpenChangeComplete,
+	title,
+	finalFocus,
+	children
+}: BottomSheetProps) {
 	return (
-		<Drawer.Root open={open} onOpenChange={onOpenChange}>
+		<Drawer.Root open={open} onOpenChange={onOpenChange} onOpenChangeComplete={onOpenChangeComplete}>
 			<Drawer.Portal>
 				<Drawer.Backdrop className="sheet-scrim fixed inset-0 z-20 bg-scrim" />
 				<Drawer.Viewport className="fixed inset-0 z-30 flex items-end justify-center">

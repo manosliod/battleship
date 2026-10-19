@@ -80,10 +80,14 @@ The web app lives in `web/`. It is a React app built with Vite, and it can also 
   Theme panel saves the choice and marks the page again at once. On System the browser follows the device setting,
   live, through CSS; no code watches it. A choice made in another tab arrives through the browser's `storage` event;
   the store listens for it only while some part of the page shows the theme, and stops when nothing does.
+- **There is one Theme panel for the whole app.** It lives in the app shell (`theme-panel-host.tsx`), next to the
+  screens, and `shared/stores/theme-panel-store.ts` says whether it is open. The Theme button on each app bar only asks
+  the store to open it. So a screen that changes while the panel is open (the engine finishing its download, for
+  example) does not close it, and closing returns focus to the Theme button that is on screen now.
 - **The Theme panel downloads on its own**, as soon as the pointer or keyboard focus reaches the Theme button. If it is
-  still downloading when the button is pressed, the button reports itself busy and a loading indicator fades in after
-  a quarter of a second. If the download fails, a snackbar says "Couldn’t open Theme. Try again." and the next press
-  tries again.
+  still downloading when the button is pressed, a loading indicator fades in after a quarter of a second. Once
+  downloaded, it opens at once. If the download fails, a snackbar says "Couldn’t open Theme. Try again." and the next
+  press tries again.
 - **Sheet or dialog is decided when Theme is pressed** (`shared/utils/window-class.ts`, the 600 dp medium breakpoint
   kept in `styles/breakpoints.ts` and checked against `tokens.css` by a test). It stays the same until the panel
   closes, even if the window is resized, and closing always returns focus to the Theme button.

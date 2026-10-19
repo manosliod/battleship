@@ -155,3 +155,25 @@ test('a storage that throws falls back to System and the picker still works', as
 	await page.getByRole('radio', { name: 'Light' }).click()
 	await expect(surface(page)).toHaveCSS('background-color', lightSurface)
 })
+
+test('an open Theme panel stays open while the engine finishes loading', async ({ page }) => {
+	let release: () => void = () => undefined
+	const engineReady = new Promise<void>((resolve) => {
+		release = resolve
+	})
+	await page.route(/battleship-engine/, async (route) => {
+		await engineReady
+		await route.continue()
+	})
+	await page.goto('./')
+	await page.getByLabel('Your name').fill('Ada')
+	await page.getByRole('button', { name: 'Continue' }).click()
+	await expect(page.getByRole('heading', { name: 'Starting the game engine' })).toBeVisible()
+	await openTheme(page)
+	release()
+	await expect(page.locator('h2', { hasText: 'Place your Carrier' })).toBeAttached()
+	await expect(picker(page)).toBeVisible()
+	await page.keyboard.press('Escape')
+	await expect(picker(page)).toBeHidden()
+	await expect(themeButton(page)).toBeFocused()
+})
