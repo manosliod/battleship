@@ -79,7 +79,9 @@ The web app lives in `web/`. It is a React app built with Vite, and it can also 
   (`data-theme`) before anything is drawn, so a returning player never sees the wrong colours flash. Choosing in the
   Theme panel saves the choice and marks the page again at once. On System the browser follows the device setting,
   live, through CSS; no code watches it. A choice made in another tab arrives through the browser's `storage` event;
-  the store listens for it only while some part of the page shows the theme, and stops when nothing does.
+  the store listens for it only while some part of the page shows the theme, and stops when nothing does. It also
+  reads the saved choice again whenever something starts showing the theme and when the browser brings the page back
+  from its back-forward cache, so a choice made elsewhere in the meantime is never missed.
 - **There is one Theme panel for the whole app.** It lives in the app shell (`theme-panel-host.tsx`), next to the
   screens, and `shared/stores/theme-panel-store.ts` says whether it is open. The Theme button on each app bar only asks
   the store to open it. So a screen that changes while the panel is open (the engine finishing its download, for

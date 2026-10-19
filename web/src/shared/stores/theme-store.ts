@@ -9,9 +9,9 @@ export type ThemeState = Readonly<{
 	actions: Readonly<{ choose: (theme: ThemeChoice) => void }>
 }>
 
-type StorageEvents = Pick<EventTarget, 'addEventListener' | 'removeEventListener'>
+type WindowEvents = Pick<EventTarget, 'addEventListener' | 'removeEventListener'>
 
-export function createThemeStore(service: ThemeService, events: StorageEvents) {
+export function createThemeStore(service: ThemeService, events: WindowEvents) {
 	const store = createStore<ThemeState>()((set) => ({
 		theme: service.read(),
 		actions: {
@@ -23,11 +23,27 @@ export function createThemeStore(service: ThemeService, events: StorageEvents) {
 		}
 	}))
 
+	const show = (theme: ThemeChoice) => {
+		if (theme !== store.getState().theme) {
+			service.apply(theme)
+			store.setState({ theme })
+		}
+	}
+
+	const reread = () => {
+		show(service.read())
+	}
+
 	const onStorage = (event: Event) => {
 		const theme = event instanceof StorageEvent ? service.readEvent(event) : null
 		if (theme !== null) {
-			service.apply(theme)
-			store.setState({ theme })
+			show(theme)
+		}
+	}
+
+	const onPageShow = (event: Event) => {
+		if (event instanceof PageTransitionEvent && event.persisted) {
+			reread()
 		}
 	}
 
@@ -35,15 +51,18 @@ export function createThemeStore(service: ThemeService, events: StorageEvents) {
 
 	const subscribe: typeof store.subscribe = (listener) => {
 		subscribers += 1
+		const unsubscribe = store.subscribe(listener)
 		if (subscribers === 1) {
 			events.addEventListener('storage', onStorage)
+			events.addEventListener('pageshow', onPageShow)
+			reread()
 		}
-		const unsubscribe = store.subscribe(listener)
 		return () => {
 			unsubscribe()
 			subscribers -= 1
 			if (subscribers === 0) {
 				events.removeEventListener('storage', onStorage)
+				events.removeEventListener('pageshow', onPageShow)
 			}
 		}
 	}

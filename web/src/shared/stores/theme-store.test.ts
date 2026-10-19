@@ -6,13 +6,14 @@ import type { ThemeService } from '@/shared/services/theme-service'
 import { createThemeStore } from './theme-store'
 
 const aThemeService = (stored: ThemeChoice = 'system', fromEvent: ThemeChoice | null = null): ThemeService => ({
-	read: vi.fn(() => stored),
+	read: vi.fn<() => ThemeChoice>(() => stored),
 	save: vi.fn(),
 	apply: vi.fn(),
 	readEvent: vi.fn(() => fromEvent)
 })
 
 const storageEvent = () => new StorageEvent('storage')
+const pageShow = (persisted: boolean) => new PageTransitionEvent('pageshow', { persisted })
 
 describe('theme store', () => {
 	it('starts on System by default', () => {
@@ -56,6 +57,33 @@ describe('theme store', () => {
 		events.dispatchEvent(storageEvent())
 		expect(store.getState().theme).toBe('light')
 		expect(service.apply).not.toHaveBeenCalled()
+		unsubscribe()
+	})
+
+	it('reads the stored choice again when the page comes back from the back-forward cache', () => {
+		const service = aThemeService('light')
+		const events = new EventTarget()
+		const store = createThemeStore(service, events)
+		const unsubscribe = store.subscribe(() => undefined)
+		vi.mocked(service.read).mockReturnValue('dark')
+		events.dispatchEvent(pageShow(false))
+		expect(store.getState().theme).toBe('light')
+		events.dispatchEvent(pageShow(true))
+		expect(store.getState().theme).toBe('dark')
+		expect(service.apply).toHaveBeenCalledWith('dark')
+		unsubscribe()
+		vi.mocked(service.read).mockReturnValue('system')
+		events.dispatchEvent(pageShow(true))
+		expect(store.getState().theme).toBe('dark')
+	})
+
+	it('reads the stored choice again when someone subscribes after nobody was', () => {
+		const service = aThemeService('light')
+		const store = createThemeStore(service, new EventTarget())
+		vi.mocked(service.read).mockReturnValue('dark')
+		const unsubscribe = store.subscribe(() => undefined)
+		expect(store.getState().theme).toBe('dark')
+		expect(service.apply).toHaveBeenCalledWith('dark')
 		unsubscribe()
 	})
 })
