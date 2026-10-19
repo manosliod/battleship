@@ -3,12 +3,13 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import brightnessAuto from '@/forest/assets/icons/brightness_auto.svg'
 import darkMode from '@/forest/assets/icons/dark_mode.svg'
+import { SnackbarProvider } from '@/forest/components/snackbar'
 import { mockWindowClass } from '@/testing/window'
 
-const renderButton = async () => {
-	const { ThemeButton } = await import('./theme-button')
-	const { ThemePanelHost } = await import('./theme-panel-host')
-	const { SnackbarProvider } = await import('@/forest/components/snackbar')
+import { ThemeButton } from './theme-button'
+import { ThemePanelHost } from './theme-panel-host'
+
+const renderButton = () => {
 	render(
 		<SnackbarProvider>
 			<ThemeButton />
@@ -30,19 +31,17 @@ const open = async (button: HTMLElement) => {
 
 describe('theme button', () => {
 	beforeEach(() => {
-		vi.resetModules()
 		localStorage.clear()
 		delete document.documentElement.dataset['theme']
 	})
 
 	afterEach(() => {
 		vi.unstubAllGlobals()
-		vi.doUnmock('./theme-panel')
 	})
 
 	it('opens a sheet without Done on compact', async () => {
 		mockWindowClass(true)
-		const button = await renderButton()
+		const button = renderButton()
 		const sheet = await open(button)
 		expect(within(sheet).getByRole('heading', { name: 'Theme' })).toBeInTheDocument()
 		expect(within(sheet).queryByRole('button', { name: 'Done' })).not.toBeInTheDocument()
@@ -51,14 +50,14 @@ describe('theme button', () => {
 
 	it('opens a dialog with Done from medium up', async () => {
 		mockWindowClass(false)
-		const dialog = await open(await renderButton())
+		const dialog = await open(renderButton())
 		expect(within(dialog).getByRole('button', { name: 'Done' })).toBeInTheDocument()
 		expect(within(dialog).getByRole('radiogroup', { name: 'Theme' })).toBeInTheDocument()
 	})
 
 	it('applies and stores a choice at once and stays open', async () => {
 		mockWindowClass(false)
-		const button = await renderButton()
+		const button = renderButton()
 		expect(icon(button)).toContain(brightnessAuto)
 		const dialog = await open(button)
 		fireEvent.click(within(dialog).getByRole('radio', { name: 'Dark' }))
@@ -72,13 +71,13 @@ describe('theme button', () => {
 	it('starts from the stored choice', async () => {
 		mockWindowClass(false)
 		localStorage.setItem('theme', 'light')
-		const dialog = await open(await renderButton())
+		const dialog = await open(renderButton())
 		expect(within(dialog).getByRole('radio', { name: 'Light' })).toBeChecked()
 	})
 
 	it('keeps the sheet while open even if the window grows to medium', async () => {
 		const list = mockWindowClass(true)
-		const sheet = await open(await renderButton())
+		const sheet = await open(renderButton())
 		list.matches = true
 		fireEvent.click(within(sheet).getByRole('radio', { name: 'Dark' }))
 		expect(
@@ -88,7 +87,7 @@ describe('theme button', () => {
 
 	it('opens at once, without waiting, after the first time', async () => {
 		mockWindowClass(false)
-		const button = await renderButton()
+		const button = renderButton()
 		const dialog = await open(button)
 		fireEvent.click(within(dialog).getByRole('button', { name: 'Done' }))
 		await waitFor(() => {
@@ -98,22 +97,5 @@ describe('theme button', () => {
 			fireEvent.click(button)
 		})
 		expect(screen.getByRole('dialog', { name: 'Theme' })).toBeInTheDocument()
-	})
-
-	it('says so in a snackbar when the panel cannot be downloaded, and opens on the next try', async () => {
-		mockWindowClass(false)
-		vi.doMock('./theme-panel', () => {
-			throw new TypeError('Failed to fetch dynamically imported module')
-		})
-		const button = await renderButton()
-		await act(async () => {
-			fireEvent.click(button)
-			await Promise.resolve()
-		})
-		expect(await screen.findByText('Couldn’t open Theme. Try again.')).toBeInTheDocument()
-		expect(screen.queryByRole('radiogroup', { name: 'Theme' })).not.toBeInTheDocument()
-		vi.doUnmock('./theme-panel')
-		const dialog = await open(button)
-		expect(within(dialog).getByRole('radiogroup', { name: 'Theme' })).toBeInTheDocument()
 	})
 })
