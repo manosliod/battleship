@@ -42,6 +42,25 @@ test('a choice applies at once, keeps the panel open and closes with Escape', as
 	await expect(themeButton(page)).toBeFocused()
 })
 
+test('the checked Dark segment keeps the rounded end of the group', async ({ page }) => {
+	await page.goto('./')
+	await openTheme(page)
+	const system = page.getByRole('radio', { name: 'System' })
+	const light = page.getByRole('radio', { name: 'Light' })
+	const dark = page.getByRole('radio', { name: 'Dark' })
+	await dark.click()
+	await expect(dark).toBeChecked()
+	for (const corner of ['top-left', 'bottom-left']) {
+		await expect(system).not.toHaveCSS(`border-${corner}-radius`, '0px')
+	}
+	for (const corner of ['top-right', 'bottom-right']) {
+		await expect(dark).not.toHaveCSS(`border-${corner}-radius`, '0px')
+	}
+	for (const corner of ['top-left', 'top-right', 'bottom-left', 'bottom-right']) {
+		await expect(light).toHaveCSS(`border-${corner}-radius`, '0px')
+	}
+})
+
 test('arrow keys move the choice and the scrim or Done closes the panel', async ({ page }, info) => {
 	await startGame(page)
 	await openTheme(page)
