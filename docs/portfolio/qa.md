@@ -95,7 +95,7 @@ dark; setup with the Theme button), and at 320 and 360 for the worst case. Each 
 | A failed panel download shows a snackbar and the next press opens it | unit and e2e |
 | A picker download slower than 250 ms opens the sheet or dialog in its Loading state ("Loading Theme"), then the picker in the same surface | `theme-panel-loading.test.tsx`, e2e |
 | Done, Escape or the scrim close the Loading state and the open is cancelled; a failure while loading closes it, focus returns to Theme | unit and e2e |
-| Segment ends follow the group's rounding and dividers sit between segments | e2e, "the first and last segments keep the group's rounded ends" |
+| Segment ends follow the group's rounding and dividers sit between segments | e2e, "the first and last segments keep the group's rounded ends and dividers sit between segments" |
 
 ### Accepted differences
 

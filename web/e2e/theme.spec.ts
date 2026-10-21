@@ -66,6 +66,9 @@ test("the first and last segments keep the group's rounded ends and dividers sit
 	await expect(system).toHaveCSS('border-left-width', '0px')
 	await expect(light).toHaveCSS('border-left-width', '1px')
 	await expect(dark).toHaveCSS('border-left-width', '1px')
+	for (const segment of [system, light, dark]) {
+		await expect(segment).toHaveCSS('border-right-width', '0px')
+	}
 })
 
 test('arrow keys move the choice and the scrim or Done closes the panel', async ({ page }, info) => {
