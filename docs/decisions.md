@@ -155,3 +155,14 @@ the player closes it. The status line already says who won behind the panel.
 **Why:** M3 shows one modal at a time and never takes a surface away from the player while they are using it; the
 player opened Theme on purpose, and the result is not lost by waiting. Two modals at once would also give two focus
 traps.
+
+## The segment ends are found by element type
+
+**Chose:** the segmented button rounds its first and last segment with `first-of-type` and `last-of-type`, and draws
+the divider on every segment but the first of its type.
+
+**Instead of:** `first` and `last`.
+
+**Why:** Base UI puts a hidden input after each radio, so the last segment is never the last child and kept square
+corners, which showed when Dark was checked. The segments are the only elements of their type in the group. An e2e test
+in `web/e2e/theme.spec.ts` checks the ends against the group's rounding and the dividers.

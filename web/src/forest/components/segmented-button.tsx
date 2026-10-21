@@ -31,7 +31,7 @@ export function SegmentedButton<T extends string>({ label, options, value, onVal
 					key={option.value}
 					value={option.value}
 					aria-label={option.label}
-					className="state-layer target relative flex cursor-pointer items-center justify-center gap-2 border-outline pr-4 pl-3 text-label-large text-on-surface first:rounded-l-full last:rounded-r-full not-first:border-l data-checked:bg-secondary-container data-checked:text-on-secondary-container"
+					className="state-layer target relative flex cursor-pointer items-center justify-center gap-2 border-outline pr-4 pl-3 text-label-large text-on-surface first-of-type:rounded-l-full last-of-type:rounded-r-full not-first-of-type:border-l data-checked:bg-secondary-container data-checked:text-on-secondary-container"
 				>
 					<Icon name={option.value === value ? 'check' : option.icon} className="size-icon-small" />
 					<span aria-hidden="true">{option.label}</span>
