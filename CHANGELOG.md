@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.1](https://github.com/manosliod/battleship/compare/v1.1.0...v1.1.1) (2026-10-21)
+
+
+### 🐛 Bug Fixes
+
+* KAN-29 round both ends of the Theme picker's segmented button ([#23](https://github.com/manosliod/battleship/issues/23)) ([6bc7425](https://github.com/manosliod/battleship/commit/6bc742517e7350077fd85bc625d05a9c8950c9dc))
+
 ## [1.1.0](https://github.com/manosliod/battleship/compare/v1.0.1...v1.1.0) (2026-10-19)
 
 
