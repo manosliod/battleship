@@ -95,6 +95,7 @@ dark; setup with the Theme button), and at 320 and 360 for the worst case. Each 
 | A failed panel download shows a snackbar and the next press opens it | unit and e2e |
 | A picker download slower than 250 ms opens the sheet or dialog in its Loading state ("Loading Theme"), then the picker in the same surface | `theme-panel-loading.test.tsx`, e2e |
 | Done, Escape or the scrim close the Loading state and the open is cancelled; a failure while loading closes it, focus returns to Theme | unit and e2e |
+| Segment ends follow the group's rounding and dividers sit between segments | e2e, "the first and last segments keep the group's rounded ends" |
 
 ### Accepted differences
 
@@ -114,8 +115,8 @@ dark; setup with the Theme button), and at 320 and 360 for the worst case. Each 
 | Below 320 CSS px (a 412 px phone at 200% zoom or font scale) the three segments shrink to 57 px and the check icon and "System" overlap the next segment | Accepted: below the WCAG 1.4.10 reflow width of 320 px. Fixing it needs a layout M3 does not define for segmented buttons (open question) |
 
 Held up: the sheet at 320 and 360 (segments 95–102 px, no horizontal scroll); the placement app bar at 320 and at
-200% zoom (title wraps inside the bar, Back and Theme stay reachable); dark theme at every width; keyboard path with no
-console errors.
+200% zoom (title wraps inside the bar, Back and Theme stay reachable); dark theme at every width in the default state; keyboard path with no console errors. Missed: with Dark checked the last
+segment had square corners, because only the default state was checked in dark. Fixed in KAN-29.
 
 ### Not checked here
 

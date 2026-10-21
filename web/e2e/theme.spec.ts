@@ -42,7 +42,9 @@ test('a choice applies at once, keeps the panel open and closes with Escape', as
 	await expect(themeButton(page)).toBeFocused()
 })
 
-test('the checked Dark segment keeps the rounded end of the group', async ({ page }) => {
+test("the first and last segments keep the group's rounded ends and dividers sit between segments", async ({
+	page
+}) => {
 	await page.goto('./')
 	await openTheme(page)
 	const system = page.getByRole('radio', { name: 'System' })
@@ -50,15 +52,20 @@ test('the checked Dark segment keeps the rounded end of the group', async ({ pag
 	const dark = page.getByRole('radio', { name: 'Dark' })
 	await dark.click()
 	await expect(dark).toBeChecked()
+	const groupRadius = await picker(page).evaluate((group) => getComputedStyle(group).borderTopLeftRadius)
+	expect(groupRadius).not.toBe('0px')
 	for (const corner of ['top-left', 'bottom-left']) {
-		await expect(system).not.toHaveCSS(`border-${corner}-radius`, '0px')
+		await expect(system).toHaveCSS(`border-${corner}-radius`, groupRadius)
 	}
 	for (const corner of ['top-right', 'bottom-right']) {
-		await expect(dark).not.toHaveCSS(`border-${corner}-radius`, '0px')
+		await expect(dark).toHaveCSS(`border-${corner}-radius`, groupRadius)
 	}
 	for (const corner of ['top-left', 'top-right', 'bottom-left', 'bottom-right']) {
 		await expect(light).toHaveCSS(`border-${corner}-radius`, '0px')
 	}
+	await expect(system).toHaveCSS('border-left-width', '0px')
+	await expect(light).toHaveCSS('border-left-width', '1px')
+	await expect(dark).toHaveCSS('border-left-width', '1px')
 })
 
 test('arrow keys move the choice and the scrim or Done closes the panel', async ({ page }, info) => {
