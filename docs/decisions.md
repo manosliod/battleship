@@ -166,3 +166,12 @@ the divider on every segment but the first of its type.
 **Why:** Base UI puts a hidden input after each radio, so the last segment is never the last child and kept square
 corners, which showed when Dark was checked. The segments are the only elements of their type in the group. An e2e test
 in `web/e2e/theme.spec.ts` checks the ends against the group's rounding and the dividers.
+
+## Icons come from the Material Symbols package
+
+**Chose:** `Icon` imports each icon from `@material-symbols/svg-400`.
+
+**Instead of:** SVG files exported from Figma and copied into `web/src/forest/assets/icons/`.
+
+**Why:** The copies were Material Symbols already, so each new icon meant another file and nothing tied them to a
+version. They are the outlined set (`error` filled) and are still drawn as a CSS mask, so they follow the colour tokens.
