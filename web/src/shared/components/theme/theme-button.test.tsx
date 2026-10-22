@@ -1,7 +1,7 @@
 import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
-import { icons } from '@/forest/components/icon'
+import { icons } from '@/forest/components/icons'
 import { SnackbarProvider } from '@/forest/components/snackbar'
 import { mockWindowClass } from '@/testing/window'
 
