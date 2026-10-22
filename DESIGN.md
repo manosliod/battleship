@@ -114,7 +114,7 @@ Placement on Expanded uses a 360 dp side pane (status, ships, actions, Start bat
 ## Icons
 
 Kit: `arrow_back`, `close`, `error`. Added to Forest from Material Symbols Outlined 400 (`@material-symbols/svg-400`
-0.48.0), because the kit lacks them: `shuffle`, `rotate_right`, `restart_alt`, `my_location`.
+0.48.1), because the kit lacks them: `shuffle`, `rotate_right`, `restart_alt`, `my_location`.
 
 ## Theme choice
 

@@ -11,7 +11,7 @@ import rotateRight from '@material-symbols/svg-400/outlined/rotate_right.svg'
 import shuffle from '@material-symbols/svg-400/outlined/shuffle.svg'
 import type { CSSProperties } from 'react'
 
-const icons = {
+export const icons = {
 	arrowBack,
 	brightnessAuto,
 	check,
