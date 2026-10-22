@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.2](https://github.com/manosliod/battleship/compare/v1.1.1...v1.1.2) (2026-10-22)
+
+
+### ♻️ Refactoring
+
+* KAN-37 load the icons from @material-symbols/svg-400 ([#25](https://github.com/manosliod/battleship/issues/25)) ([b9ee985](https://github.com/manosliod/battleship/commit/b9ee985f6e0f609e69b8f0674767592dd82233cc))
+
 ## [1.1.1](https://github.com/manosliod/battleship/compare/v1.1.0...v1.1.1) (2026-10-21)
 
 
