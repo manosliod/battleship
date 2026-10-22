@@ -1,8 +1,8 @@
+import brightnessAuto from '@material-symbols/svg-400/outlined/brightness_auto.svg'
+import darkMode from '@material-symbols/svg-400/outlined/dark_mode.svg'
 import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
-import brightnessAuto from '@/forest/assets/icons/brightness_auto.svg'
-import darkMode from '@/forest/assets/icons/dark_mode.svg'
 import { SnackbarProvider } from '@/forest/components/snackbar'
 import { mockWindowClass } from '@/testing/window'
 
